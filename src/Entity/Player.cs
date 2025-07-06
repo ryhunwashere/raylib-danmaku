@@ -3,16 +3,20 @@ using Raylib_cs;
 using RaylibDanmaku.Core;
 namespace RaylibDanmaku.Entity
 {
+    /// <summary>
+    /// Player constructor and input controls.
+    /// </summary>
     internal class Player
     {
         public Vector2 Position;
         public float MoveSpeed;
+        public float SlowMoveSpeed;
         public float HitboxRadius;
         public float GrazeRadius;
         public int TextureId;
         public float TextureScale { get; private set; }
 
-        public Player(float moveSpeed, float hitboxRadius, string spritePath, float scale)
+        public Player(float moveSpeed, float slowMoveSpeed, float hitboxRadius, string spritePath, float scale)
         {
             if (string.IsNullOrEmpty(spritePath))
                 throw new ArgumentException("spritePath must not be null or empty.");
@@ -25,6 +29,7 @@ namespace RaylibDanmaku.Entity
 
             Position = new Vector2(500, 500);
             MoveSpeed = moveSpeed;
+            SlowMoveSpeed = slowMoveSpeed;
             HitboxRadius = hitboxRadius;        // smaller hitbox
             GrazeRadius = hitboxRadius * 4.0f;
         }
@@ -33,9 +38,10 @@ namespace RaylibDanmaku.Entity
         {
             Console.WriteLine($"deltaTime: {deltaTime}");
             float speed = MoveSpeed;
+            float slowSpeed = SlowMoveSpeed;
 
             if (Input.IsKeyDown(KeyboardKey.LeftShift))
-                speed /= 2.0f;
+                speed = slowSpeed;
 
             if (Input.IsKeyDown(KeyboardKey.Left))
                 Position.X -= speed * deltaTime;
@@ -45,7 +51,7 @@ namespace RaylibDanmaku.Entity
                 Position.Y -= speed * deltaTime;
             if (Input.IsKeyDown(KeyboardKey.Down))
                 Position.Y += speed * deltaTime;
-            
+
             // Clamp movement to window size
             Position.X = Raymath.Clamp(Position.X, HitboxRadius, Config.SCREEN_WIDTH - HitboxRadius);
             Position.Y = Raymath.Clamp(Position.Y, HitboxRadius, Config.SCREEN_HEIGHT - HitboxRadius);
