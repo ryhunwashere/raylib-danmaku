@@ -1,6 +1,8 @@
-// Global constants
 namespace RaylibDanmaku.Core
 {
+    /// <summary>
+    /// Global constants.
+    /// </summary>
     internal static class Config
     {
         public const int SCREEN_WIDTH = 640;

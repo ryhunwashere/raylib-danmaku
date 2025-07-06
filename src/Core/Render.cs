@@ -1,8 +1,9 @@
-// Native renderer written in C, because rendering in C# causes stuttering issues.
-// nativerenderer.dll is located in lib folder.
 using System.Runtime.InteropServices;
 namespace RaylibDanmaku.Core
 {
+    /// <summary>
+    /// Native renderer written in C, because rendering in C# causes stuttering issues.
+    /// </summary>
     internal static partial class Render
     {
         [LibraryImport("nativerenderer.dll", StringMarshalling = StringMarshalling.Utf8)]

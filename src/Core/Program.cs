@@ -1,6 +1,8 @@
-﻿// Main program
-namespace RaylibDanmaku.Core
+﻿namespace RaylibDanmaku.Core
 {
+    /// <summary>
+    /// Main program to run the game.
+    /// </summary>
     internal class Program
     {
         static void Main()

@@ -1,7 +1,9 @@
-// Keyboard input bindings to the native renderer
 using Raylib_cs;
 namespace RaylibDanmaku.Core
 {
+    /// <summary>
+    /// Keyboard input bindings to the native renderer.
+    /// </summary>
     internal static class Input
     {
         /// <summary> Returns true if the given key is currently held down. </summary>
