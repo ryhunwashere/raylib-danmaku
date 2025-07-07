@@ -12,6 +12,7 @@ namespace RaylibDanmaku.Core
         {
             Render.InitRender(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, "Raylib Danmaku", 60);
 
+            // Construct new player
             player = new Player(
                 700.0f,
                 200.0f,
@@ -26,25 +27,13 @@ namespace RaylibDanmaku.Core
         {
             Time.Update();
 
-            Console.WriteLine($"deltaTime: {Time.DeltaTime}");
             player?.Update(Time.DeltaTime);
         }
 
         public static void DrawGame()
         {
-            if (player != null)
-            {
-                Render.RenderFrame(
-                    player.Position.X,
-                    player.Position.Y,
-                    player.TextureId,
-                    player.TextureScale
-                );
-            }
-
-            Raylib.DrawFPS(10, 10);
-            float deltaTime = Raylib.GetFrameTime();
-            Raylib.DrawText($"DeltaTime: {deltaTime:F4}", 10, 30, 20, Color.Red);
+            player?.Draw();
+            Render.RenderFrame();   // Draw all queued objects
         }
 
         public static void UnloadGame()

@@ -14,8 +14,8 @@
     <Content Include="../assets/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="lib\nativerenderer.dll">
-      <Link>nativerenderer.dll</Link>
+    <None Include="lib\native_renderer.dll">
+      <Link>native_renderer.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

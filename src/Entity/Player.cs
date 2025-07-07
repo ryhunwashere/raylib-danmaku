@@ -36,7 +36,6 @@ namespace RaylibDanmaku.Entity
 
         public void Update(float deltaTime)
         {
-            Console.WriteLine($"deltaTime: {deltaTime}");
             float speed = MoveSpeed;
             float slowSpeed = SlowMoveSpeed;
 
@@ -55,6 +54,11 @@ namespace RaylibDanmaku.Entity
             // Clamp movement to window size
             Position.X = Raymath.Clamp(Position.X, HitboxRadius, Config.SCREEN_WIDTH - HitboxRadius);
             Position.Y = Raymath.Clamp(Position.Y, HitboxRadius, Config.SCREEN_HEIGHT - HitboxRadius);
+        }
+
+        public void Draw()
+        {
+            Render.QueueDraw(TextureId, Position.X, Position.Y, TextureScale, rotation: 0.0f, tint: NativeColor.White, layer: 1);
         }
 
         public Vector2 GetBulletSpawnPos(float offsetX, float offsetY)
