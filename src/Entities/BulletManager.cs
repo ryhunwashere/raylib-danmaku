@@ -1,0 +1,127 @@
+using System.Diagnostics;
+using System.Numerics;
+using RaylibDanmaku.Core;
+namespace RaylibDanmaku.Entities
+{
+    internal class BulletManager
+    {
+        private const int MAX_BULLETS = 1024;
+
+        // Bullet pools
+        private readonly Bullet[] playerBullets = new Bullet[MAX_BULLETS];
+        private readonly Bullet[] enemyBullets = new Bullet[MAX_BULLETS];
+        public static int PlayerBulletTextureId;
+        private const int PLAYER_BULLET_LAYER = 1;
+        private const int ENEMY_BULLET_LAYER = 2;
+
+        public enum BulletType { CIRCLE, RECT, LINE }
+        public enum BulletOwner { PLAYER, ENEMY }
+
+        public struct Bullet
+        {
+            public BulletOwner Owner;
+            public BulletType Type;
+            public Vector2 Position;
+            public Vector2 Direction;   // normalized
+            public float Speed;
+            public float Scale;
+            public float Rotation;
+            public NativeColor Tint;
+            public int TextureId;
+            public float Lifetime;
+            public bool Active;         // true if bullet is alive
+        }
+
+        /// <summary>
+        /// Spawn an individual bullet.
+        /// </summary>
+        public void SpawnBullet(
+            BulletOwner owner,
+            BulletType type,
+            Vector2 position,
+            Vector2 direction,
+            float speed,
+            float scale,
+            float rotation,
+            NativeColor tint,
+            float lifetimeSec,
+            int textureId)
+        {
+            Bullet[] pool = owner == BulletOwner.PLAYER ? playerBullets : enemyBullets;
+            for (int i = 0; i < pool.Length; i++)
+            {
+                if (!pool[i].Active)    // find inactive bullet index in the pool
+                {
+                    pool[i] = new Bullet
+                    {
+                        Owner = owner,
+                        Type = type,
+                        Position = position,
+                        Direction = Vector2.Normalize(direction),
+                        Speed = speed,
+                        Scale = scale,
+                        Rotation = rotation,
+                        Tint = tint,
+                        Lifetime = lifetimeSec,
+                        TextureId = textureId,
+                        Active = true
+                    };
+                    return; // bullet spawned
+                }
+            }
+            // If the bullet exceeds the max limit:
+            Trace.TraceWarning("[BulletManager] Bullet pool reached the limit! Max Bullets: " + MAX_BULLETS);
+        }
+
+        public void Update(float deltaTime)
+        {
+            UpdatePool(playerBullets, deltaTime);
+            // UpdatePool(enemyBullets, deltaTime);
+        }
+
+        private static void UpdatePool(Bullet[] pool, float deltaTime)
+        {
+            for (int i = 0; i < pool.Length; i++)
+            {
+                if (!pool[i].Active) continue;
+
+                pool[i].Position += pool[i].Direction * pool[i].Speed * deltaTime;
+                pool[i].Lifetime -= deltaTime;
+
+                if (pool[i].Position.X < 0 - Config.SCREEN_MARGIN ||
+                    pool[i].Position.X > Config.SCREEN_WIDTH + Config.SCREEN_MARGIN ||
+                    pool[i].Position.Y < 0 - Config.SCREEN_MARGIN ||
+                    pool[i].Position.Y > Config.SCREEN_HEIGHT + Config.SCREEN_MARGIN ||
+                    pool[i].Lifetime <= 0)
+                {
+                    pool[i].Active = false;
+                }
+            }
+        }
+
+        public void Draw()
+        {
+            DrawPool(playerBullets);
+            // DrawPool(enemyBullets);
+        }
+
+        private static void DrawPool(Bullet[] pool)
+        {
+            foreach (var bullet in pool)
+            {
+                if (!bullet.Active) continue;
+
+                Render.QueueDraw(
+                    bullet.TextureId,
+                    bullet.Position.X,
+                    bullet.Position.Y,
+                    bullet.Scale,
+                    bullet.Rotation,
+                    bullet.Tint,
+                    layer: bullet.Owner == BulletOwner.PLAYER ? PLAYER_BULLET_LAYER : ENEMY_BULLET_LAYER 
+                );
+            }
+        }
+
+    }
+}
