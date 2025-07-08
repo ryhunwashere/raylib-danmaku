@@ -5,13 +5,11 @@ namespace RaylibDanmaku.Core
     /// </summary>
     internal static class Config
     {
+        public const string WINDOW_NAME = "Raylib Danmaku";
+        public const int TARGET_FPS = 60;
         public const int SCREEN_WIDTH = 640;
         public const int SCREEN_HEIGHT = 960;
         public const int SCREEN_MARGIN = 300;
         public const int PLAYER_SCALE = 2;
-        public const float DEFAULT_PLAYER_MOVE_SPEED = 700.0f;
-        public const float DEFAULT_PLAYER_HITBOX_RADIUS = 4.0f;
-        public const int MIN_POWER_LEVEL = 0;
-        public const int MAX_POWER_LEVEL = 4;
     }
 }

@@ -1,5 +1,3 @@
-using System.Numerics;
-using Raylib_cs;
 using RaylibDanmaku.Entities;
 namespace RaylibDanmaku.Core
 {
@@ -15,7 +13,7 @@ namespace RaylibDanmaku.Core
 
         public static void InitGame()
         {
-            Render.InitRender(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, "Raylib Danmaku", 60);
+            Render.InitRender(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, Config.WINDOW_NAME, Config.TARGET_FPS);
 
             bulletManager = new BulletManager();
             beamManager = new BeamManager();
@@ -26,7 +24,8 @@ namespace RaylibDanmaku.Core
             int beamTextureId = Render.LoadTextureFromFile("assets/Beams/PlayerBeam1.png");
             BeamManager.PlayerBeamTextureId = beamTextureId;
 
-            // Construct new player
+            // TODO: character selection system to change the player constructor values.
+            // Don't mind the magic numbers for now.
             player = new Player(
                 moveSpeed: 700.0f,
                 slowMoveSpeed: 200.0f,

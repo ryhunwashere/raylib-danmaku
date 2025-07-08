@@ -16,11 +16,15 @@ namespace RaylibDanmaku.Entities
         public float SlowMoveSpeed;
         public float HitboxRadius;
         public float GrazeRadius;
+        private const float GRAZE_RADIUS_MULT = 4.0f;
         public int TextureId;
         public float TextureScale { get; private set; }
-        private readonly float shootCooldown = 0.1f;
+        private const float SHOOT_COOLDOWN = 0.1f;
         private float shootTimer = 0.0f;
+
         private int powerLevel = 0;
+        public const int MIN_POWER_LEVEL = 0;
+        public const int MAX_POWER_LEVEL = 4;
 
         public Player(float moveSpeed, float slowMoveSpeed, float hitboxRadius, string spritePath, float scale)
         {
@@ -33,11 +37,11 @@ namespace RaylibDanmaku.Entities
             if (TextureId < 0)
                 Trace.TraceWarning("Failed to load player texture!");
 
-            Position = new Vector2(500, 500);
+            Position = new Vector2(500, 500);   // don't mind the magic numbers, it's just to test the player spawning.
             MoveSpeed = moveSpeed;
             SlowMoveSpeed = slowMoveSpeed;
             HitboxRadius = hitboxRadius;
-            GrazeRadius = hitboxRadius * 4.0f;
+            GrazeRadius = hitboxRadius * GRAZE_RADIUS_MULT;
 
         }
 
@@ -64,20 +68,20 @@ namespace RaylibDanmaku.Entities
             if (Input.IsKeyDown(KeyboardKey.Down))
                 Position.Y += speed * deltaTime;
 
-            if (Input.IsKeyDown(KeyboardKey.X) && (shootTimer >= shootCooldown))
+            if (Input.IsKeyDown(KeyboardKey.X) && (shootTimer >= SHOOT_COOLDOWN))
             {
                 Shot?.Shoot(powerLevel);
                 shootTimer = 0.0f;
             }
 
             // Power level tests
-            if (Input.IsKeyPressed(KeyboardKey.KpAdd) && powerLevel < 4)
+            if (Input.IsKeyPressed(KeyboardKey.KpAdd) && powerLevel < MAX_POWER_LEVEL)
             {
                 powerLevel += 1;
                 Console.WriteLine("Level increased! Current power level: " + powerLevel);
             }
 
-            if (Input.IsKeyPressed(KeyboardKey.KpSubtract) && powerLevel > 0)
+            if (Input.IsKeyPressed(KeyboardKey.KpSubtract) && powerLevel > MIN_POWER_LEVEL)
             {
                 powerLevel -= 1;
                 Console.WriteLine("Level decreased! Current power level: " + powerLevel);

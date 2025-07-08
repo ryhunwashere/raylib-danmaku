@@ -8,10 +8,10 @@ namespace RaylibDanmaku.Entities
         private readonly Player player = player;
         private readonly BulletManager bulletManager = bulletManager;
 
-        private void SpawnPlayerBullet(float offsetX)
+        private void SpawnPlayerBullet(float offsetX, float offsetY)
         {
             Vector2 bulletDir = new(0, -1);
-            Vector2 spawnPos = player.Position + new Vector2(offsetX, -50);
+            Vector2 spawnPos = player.Position + new Vector2(offsetX, offsetY);     // Top padding
             float bulletSpeed = 2000.0f;
             float bulletScale = 1.8f;
             float rotation = -90.0f;
@@ -34,35 +34,35 @@ namespace RaylibDanmaku.Entities
 
         public void Shoot(int powerLevel)
         {
-            Trace.Assert(powerLevel >= Config.MIN_POWER_LEVEL && powerLevel <= Config.MAX_POWER_LEVEL,
-            "Shoot failed! Player power level must be between " + Config.MIN_POWER_LEVEL + " to " + Config.MAX_POWER_LEVEL + ".");
+            Trace.Assert(powerLevel >= Player.MIN_POWER_LEVEL && powerLevel <= Player.MAX_POWER_LEVEL,
+            "Shoot failed! Player power level must be between " + Player.MIN_POWER_LEVEL + " to " + Player.MAX_POWER_LEVEL + ".");
 
             switch (powerLevel)
             {
                 case 0:
-                    SpawnPlayerBullet(0.0f);
+                    SpawnPlayerBullet(offsetX: 0.0f, offsetY: -50.0f);
                     break;
                 case 1:
-                    SpawnPlayerBullet(20.0f);
-                    SpawnPlayerBullet(-20.0f);
+                    SpawnPlayerBullet(offsetX: 20.0f, offsetY: -50.0f);
+                    SpawnPlayerBullet(offsetX: -20.0f, offsetY: -50.0f);
                     break;
                 case 2:
-                    SpawnPlayerBullet(30.0f);
-                    SpawnPlayerBullet(0.0f);
-                    SpawnPlayerBullet(-30.0f);
+                    SpawnPlayerBullet(offsetX: 30.0f, offsetY: -50.0f);
+                    SpawnPlayerBullet(offsetX: 0.0f, offsetY: -50.0f);
+                    SpawnPlayerBullet(offsetX: -30.0f, offsetY: -50.0f);
                     break;
                 case 3:
-                    SpawnPlayerBullet(60.0f);
-                    SpawnPlayerBullet(20.0f);
-                    SpawnPlayerBullet(-20.0f);
-                    SpawnPlayerBullet(-60.0f);
+                    SpawnPlayerBullet(offsetX: 60.0f, offsetY: -50.0f);
+                    SpawnPlayerBullet(offsetX: 20.0f, offsetY: -50.0f);
+                    SpawnPlayerBullet(offsetX: -20.0f, offsetY: -50.0f);
+                    SpawnPlayerBullet(offsetX: -60.0f, offsetY: -50.0f);
                     break;
                 case 4:
-                    SpawnPlayerBullet(80.0f);
-                    SpawnPlayerBullet(40.0f);
-                    SpawnPlayerBullet(0.0f);
-                    SpawnPlayerBullet(-40.0f);
-                    SpawnPlayerBullet(-80.0f);
+                    SpawnPlayerBullet(offsetX: 80.0f, offsetY: -50.0f);
+                    SpawnPlayerBullet(offsetX: 40.0f, offsetY: -50.0f);
+                    SpawnPlayerBullet(offsetX: 0.0f, offsetY: -50.0f);
+                    SpawnPlayerBullet(offsetX: -40.0f, offsetY: -50.0f);
+                    SpawnPlayerBullet(offsetX: -80.0f, offsetY: -50.0f);
                     break;
                 default:
                     break;
