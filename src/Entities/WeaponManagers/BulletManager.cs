@@ -17,21 +17,6 @@ namespace RaylibDanmaku.Entities
         public enum BulletType { CIRCLE, RECT, LINE }
         public enum BulletOwner { PLAYER, ENEMY }
 
-        public struct Bullet
-        {
-            public BulletOwner Owner;
-            public BulletType Type;
-            public Vector2 Position;
-            public Vector2 Direction;   // normalized
-            public float Speed;
-            public float Scale;
-            public float Rotation;
-            public NativeColor Tint;
-            public int TextureId;
-            public float Lifetime;
-            public bool Active;         // true if bullet is alive
-        }
-
         /// <summary>
         /// Spawn an individual bullet.
         /// </summary>
@@ -118,7 +103,7 @@ namespace RaylibDanmaku.Entities
                     bullet.Scale,
                     bullet.Rotation,
                     bullet.Tint,
-                    layer: bullet.Owner == BulletOwner.PLAYER ? PLAYER_BULLET_LAYER : ENEMY_BULLET_LAYER 
+                    layer: bullet.Owner == BulletOwner.PLAYER ? PLAYER_BULLET_LAYER : ENEMY_BULLET_LAYER
                 );
             }
         }

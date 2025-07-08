@@ -1,0 +1,24 @@
+Drawing orders to keep track of. Higher layers will be drawn on top of the lower ones:
+private const int PLAYER_BULLET_LAYER = 1;
+private const int ENEMY_BULLET_LAYER = 2;
+private const int PLAYER_BEAM_LAYER = 3;
+private const int ENEMY_BEAM_LAYER = 4;
+
+
+Debugging notes to keep remind myself in case something doesn't appear, so I won't feel so stupid:
+"DO NOT FORGET TO CALL THE Draw() FUNCTION IN Game.DrawGame()"
+"DO NOT FORGET TO CALL THE Draw() FUNCTION IN Game.DrawGame()"
+"DO NOT FORGET TO CALL THE Draw() FUNCTION IN Game.DrawGame()"
+"DO NOT FORGET TO CALL THE Draw() FUNCTION IN Game.DrawGame()"
+"DO NOT FORGET TO CALL THE Draw() FUNCTION IN Game.DrawGame()"
+
+
+Yeah you're so sure you called it?
+"CHECK ANY DUPLICATE CALLS"
+"CHECK ANY DUPLICATE CALLS"
+"CHECK ANY DUPLICATE CALLS"
+"CHECK ANY DUPLICATE CALLS"
+"CHECK ANY DUPLICATE CALLS"
+
+
+man, wtf am i doing with my life

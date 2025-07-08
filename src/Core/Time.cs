@@ -6,7 +6,7 @@ namespace RaylibDanmaku.Core
     /// </summary>
     internal static class Time
     {
-        private static Stopwatch stopwatch = Stopwatch.StartNew();
+        private static readonly Stopwatch stopwatch = Stopwatch.StartNew();
         private static float lastTime = 0f;
 
         /// <summary>

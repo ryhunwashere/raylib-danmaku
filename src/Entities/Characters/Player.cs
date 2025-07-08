@@ -9,6 +9,8 @@ namespace RaylibDanmaku.Entities
     /// </summary>
     internal class Player
     {
+        private IPlayerShot? Shot;
+
         public Vector2 Position;
         public float MoveSpeed;
         public float SlowMoveSpeed;
@@ -18,13 +20,10 @@ namespace RaylibDanmaku.Entities
         public float TextureScale { get; private set; }
         private readonly float shootCooldown = 0.1f;
         private float shootTimer = 0.0f;
-        
-        private readonly BulletManager bulletManager;
+        private int powerLevel = 0;
 
-        public Player(float moveSpeed, float slowMoveSpeed, float hitboxRadius, string spritePath, float scale, BulletManager bulletManager)
+        public Player(float moveSpeed, float slowMoveSpeed, float hitboxRadius, string spritePath, float scale)
         {
-            this.bulletManager = bulletManager;
-
             if (string.IsNullOrEmpty(spritePath))
                 throw new ArgumentException("Player spritePath must not be null or empty.");
 
@@ -39,6 +38,12 @@ namespace RaylibDanmaku.Entities
             SlowMoveSpeed = slowMoveSpeed;
             HitboxRadius = hitboxRadius;
             GrazeRadius = hitboxRadius * 4.0f;
+
+        }
+
+        public void SetShot(IPlayerShot shotType)
+        {
+            Shot = shotType;
         }
 
         public void Update(float deltaTime)
@@ -61,8 +66,21 @@ namespace RaylibDanmaku.Entities
 
             if (Input.IsKeyDown(KeyboardKey.X) && (shootTimer >= shootCooldown))
             {
-                Shoot();
+                Shot?.Shoot(powerLevel);
                 shootTimer = 0.0f;
+            }
+
+            // Power level tests
+            if (Input.IsKeyPressed(KeyboardKey.KpAdd) && powerLevel < 4)
+            {
+                powerLevel += 1;
+                Console.WriteLine("Level increased! Current power level: " + powerLevel);
+            }
+
+            if (Input.IsKeyPressed(KeyboardKey.KpSubtract) && powerLevel > 0)
+            {
+                powerLevel -= 1;
+                Console.WriteLine("Level decreased! Current power level: " + powerLevel);
             }
 
             // Clamp movement to window size
@@ -73,36 +91,6 @@ namespace RaylibDanmaku.Entities
         public void Draw()
         {
             Render.QueueDraw(TextureId, Position.X, Position.Y, TextureScale, rotation: 0.0f, tint: NativeColor.White, layer: 2);
-        }
-
-        public Vector2 GetBulletSpawnPos(float offsetX, float offsetY)
-        {
-            return new Vector2(Position.X + offsetX, Position.Y - offsetY);
-        }
-
-        public void Shoot()
-        {
-            Vector2 bulletDir = new(0, -1); // shoot upward
-            float bulletSpeed = 2500.0f;
-            float bulletScale = 1.8f;
-            float rotation = -90.0f;
-            float lifetime = 2.0f;
-
-            // Where to spawn bullet relative to player
-            Vector2 spawnPos = GetBulletSpawnPos(0, 20);
-
-            bulletManager.SpawnBullet(
-                BulletManager.BulletOwner.PLAYER,
-                BulletManager.BulletType.RECT,
-                spawnPos,
-                bulletDir,
-                bulletSpeed,
-                bulletScale,
-                rotation,
-                NativeColor.Transparent,
-                lifetime,
-                textureId: BulletManager.PlayerBulletTextureId
-            );
         }
     }
 }

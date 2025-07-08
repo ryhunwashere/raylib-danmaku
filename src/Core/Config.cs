@@ -11,5 +11,7 @@ namespace RaylibDanmaku.Core
         public const int PLAYER_SCALE = 2;
         public const float DEFAULT_PLAYER_MOVE_SPEED = 700.0f;
         public const float DEFAULT_PLAYER_HITBOX_RADIUS = 4.0f;
+        public const int MIN_POWER_LEVEL = 0;
+        public const int MAX_POWER_LEVEL = 4;
     }
 }

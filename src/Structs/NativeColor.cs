@@ -10,7 +10,7 @@ namespace RaylibDanmaku.Core
         public readonly byte a = a;
         public static readonly NativeColor Black = new(0, 0, 0, 255);
         public static readonly NativeColor White = new(255, 255, 255, 255);
-        public static readonly NativeColor Transparent = new(255, 255, 255, 100);
+        public static readonly NativeColor Transparent = new(255, 255, 255, 150);
         public static readonly NativeColor Red = new(255, 0, 0, 255);
     }
 }
