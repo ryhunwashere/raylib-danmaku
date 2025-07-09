@@ -1,6 +1,10 @@
 using System.Numerics;
+
 using RaylibDanmaku.Core;
-namespace RaylibDanmaku.Entities
+using RaylibDanmaku.Entities.Characters;
+using RaylibDanmaku.Entities.WeaponManagers;
+
+namespace RaylibDanmaku.Entities.PlayerShotTypes
 {
     internal class BeamShot(Player player, BeamManager beamManager) : IPlayerShot
     {

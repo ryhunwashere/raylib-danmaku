@@ -1,7 +1,11 @@
 using System.Diagnostics;
 using System.Numerics;
+
 using RaylibDanmaku.Core;
-namespace RaylibDanmaku.Entities
+using RaylibDanmaku.Engine;
+using RaylibDanmaku.Entities.WeaponTypes;
+
+namespace RaylibDanmaku.Entities.WeaponManagers
 {
     internal class BulletManager
     {
@@ -96,7 +100,7 @@ namespace RaylibDanmaku.Entities
             {
                 if (!bullet.Active) continue;
 
-                Render.QueueDraw(
+                EngineRender.QueueDraw(
                     bullet.TextureId,
                     bullet.Position.X,
                     bullet.Position.Y,

@@ -1,4 +1,4 @@
-namespace RaylibDanmaku.Entities
+namespace RaylibDanmaku.Entities.PlayerShotTypes
 {
     internal interface IPlayerShot
     {

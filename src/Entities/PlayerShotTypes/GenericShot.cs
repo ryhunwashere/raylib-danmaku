@@ -1,7 +1,11 @@
 using System.Diagnostics;
 using System.Numerics;
+
 using RaylibDanmaku.Core;
-namespace RaylibDanmaku.Entities
+using RaylibDanmaku.Entities.Characters;
+using RaylibDanmaku.Entities.WeaponManagers;
+
+namespace RaylibDanmaku.Entities.PlayerShotTypes
 {
     internal class GenericShot(Player player, BulletManager bulletManager) : IPlayerShot
     {

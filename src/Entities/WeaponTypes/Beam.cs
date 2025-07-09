@@ -1,6 +1,9 @@
 using System.Numerics;
+
 using RaylibDanmaku.Core;
-namespace RaylibDanmaku.Entities
+using RaylibDanmaku.Entities.WeaponManagers;
+
+namespace RaylibDanmaku.Entities.WeaponTypes
 {
     /// <summary>
     /// Represents a single beam object.

@@ -1,4 +1,8 @@
-using RaylibDanmaku.Entities;
+using RaylibDanmaku.Engine;
+using RaylibDanmaku.Entities.Characters;
+using RaylibDanmaku.Entities.WeaponManagers;
+using RaylibDanmaku.Entities.PlayerShotTypes;
+
 namespace RaylibDanmaku.Core
 {
     /// <summary>
@@ -13,15 +17,15 @@ namespace RaylibDanmaku.Core
 
         public static void InitGame()
         {
-            Render.InitRender(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, Config.WINDOW_NAME, Config.TARGET_FPS);
+            EngineRender.InitRender(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, Config.WINDOW_NAME, Config.TARGET_FPS);
 
             bulletManager = new BulletManager();
             beamManager = new BeamManager();
 
-            int bulletTextureId = Render.LoadTextureFromFile("assets/Bullets/PlayerBullet1.png");
+            int bulletTextureId = EngineRender.LoadTextureFromFile("assets/Bullets/PlayerBullet1.png");
             BulletManager.PlayerBulletTextureId = bulletTextureId;
 
-            int beamTextureId = Render.LoadTextureFromFile("assets/Beams/PlayerBeam1.png");
+            int beamTextureId = EngineRender.LoadTextureFromFile("assets/Beams/PlayerBeam1.png");
             BeamManager.PlayerBeamTextureId = beamTextureId;
 
             // TODO: character selection system to change the player constructor values.
@@ -57,12 +61,12 @@ namespace RaylibDanmaku.Core
             bulletManager?.Draw();
             beamManager?.Draw();
 
-            Render.RenderFrame();   // Draw all queued objects
+            EngineRender.RenderFrame();   // Draw all queued objects
         }
 
         public static void UnloadGame()
         {
-            Render.ShutdownRender();
+            EngineRender.ShutdownRender();
         }
     }
 }

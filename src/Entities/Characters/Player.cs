@@ -1,8 +1,12 @@
 using System.Diagnostics;
 using System.Numerics;
+
 using Raylib_cs;
 using RaylibDanmaku.Core;
-namespace RaylibDanmaku.Entities
+using RaylibDanmaku.Engine;
+using RaylibDanmaku.Entities.PlayerShotTypes;
+
+namespace RaylibDanmaku.Entities.Characters
 {
     /// <summary>
     /// Player constructor and input controls.
@@ -31,7 +35,7 @@ namespace RaylibDanmaku.Entities
             if (string.IsNullOrEmpty(spritePath))
                 throw new ArgumentException("Player spritePath must not be null or empty.");
 
-            TextureId = Render.LoadTextureFromFile(spritePath);
+            TextureId = EngineRender.LoadTextureFromFile(spritePath);
             TextureScale = scale;
 
             if (TextureId < 0)
@@ -94,7 +98,7 @@ namespace RaylibDanmaku.Entities
 
         public void Draw()
         {
-            Render.QueueDraw(TextureId, Position.X, Position.Y, TextureScale, rotation: 0.0f, tint: NativeColor.White, layer: 2);
+            EngineRender.QueueDraw(TextureId, Position.X, Position.Y, TextureScale, rotation: 0.0f, tint: NativeColor.White, layer: 2);
         }
     }
 }

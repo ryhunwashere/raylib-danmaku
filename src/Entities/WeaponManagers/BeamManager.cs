@@ -1,7 +1,11 @@
 using System.Diagnostics;
 using System.Numerics;
+
 using RaylibDanmaku.Core;
-namespace RaylibDanmaku.Entities
+using RaylibDanmaku.Engine;
+using RaylibDanmaku.Entities.WeaponTypes;
+
+namespace RaylibDanmaku.Entities.WeaponManagers
 {
     public enum BeamOwner { PLAYER, ENEMY }
 
@@ -47,7 +51,6 @@ namespace RaylibDanmaku.Entities
                 if (!pool[i].Active)
                 {
                     pool[i].Activate(owner, startPosition, rotation, scale, tint, textureId, followTargetFunc);
-                    // Console.WriteLine($"[BeamManager.SpawnBeam()] Beam activated at index {i}");
                     return;
                 }
             }
@@ -88,7 +91,7 @@ namespace RaylibDanmaku.Entities
                 if (!beam.Active) continue;
 
                 // Console.WriteLine($"[BeamManager.DrawPool()] Drawing beam at pos: {beam.Position}, layer: {layer}");
-                Render.QueueDraw(
+                EngineRender.QueueDraw(
                     beam.TextureId,
                     beam.Position.X,
                     beam.Position.Y,

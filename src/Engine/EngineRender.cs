@@ -1,10 +1,13 @@
 using System.Runtime.InteropServices;
-namespace RaylibDanmaku.Core
+
+using RaylibDanmaku.Core;
+
+namespace RaylibDanmaku.Engine
 {
     /// <summary>
-    /// Native renderer written in C, because rendering in C# causes stuttering issues.
+    /// Interop to rendering engine backend in native C, because rendering in C# causes stuttering issues.
     /// </summary>
-    internal static partial class Render
+    internal static partial class EngineRender
     {
         [LibraryImport("native_renderer.dll")]
         public static partial void QueueDraw(int textureId, float x, float y, float scale, float rotation, NativeColor tint, int layer);
@@ -23,11 +26,5 @@ namespace RaylibDanmaku.Core
 
         [LibraryImport("native_renderer.dll", StringMarshalling = StringMarshalling.Utf8)]
         public static partial int LoadTextureFromFile(string filePath);
-
-        [LibraryImport("native_renderer.dll")]
-        public static partial int IsKeyDownNative(int key);
-
-        [LibraryImport("native_renderer.dll")]
-        public static partial int IsKeyPressedNative(int key);
     }
 }
