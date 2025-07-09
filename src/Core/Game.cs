@@ -17,7 +17,7 @@ namespace RaylibDanmaku.Core
         {
             EngineRender.InitRender(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, Config.WINDOW_NAME, Config.TARGET_FPS);
 
-            PlayerManager.InitSelectedPlayer(playerId: 1);      // Choose player character here
+            PlayerManager.InitSelectedPlayer(playerId: 2);      // Choose player character here
 
             player = PlayerManager.GetPlayer();
             bulletManager = PlayerManager.GetBulletManager();

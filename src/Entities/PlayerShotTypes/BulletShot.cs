@@ -7,7 +7,7 @@ using RaylibDanmaku.Entities.WeaponManagers;
 
 namespace RaylibDanmaku.Entities.PlayerShotTypes
 {
-    internal class GenericShot(Player player, BulletManager bulletManager) : IPlayerShot
+    internal class BulletShot(Player player, BulletManager bulletManager) : IPlayerShot
     {
         private readonly Player player = player;
         private readonly BulletManager bulletManager = bulletManager;
@@ -36,7 +36,7 @@ namespace RaylibDanmaku.Entities.PlayerShotTypes
             );
         }
 
-        public void Shoot(int powerLevel)
+        public void ShootBullet(int powerLevel)
         {
             Trace.Assert(powerLevel >= Player.MIN_POWER_LEVEL && powerLevel <= Player.MAX_POWER_LEVEL,
             "Shoot failed! Player power level must be between " + Player.MIN_POWER_LEVEL + " to " + Player.MAX_POWER_LEVEL + ".");
@@ -72,5 +72,9 @@ namespace RaylibDanmaku.Entities.PlayerShotTypes
                     break;
             }
         }
+
+        // Useless functions, because these two were meant for beams
+        public void ShootBeam(int powerLevel){}
+        public void StopShootBeam(){}
     }
 }

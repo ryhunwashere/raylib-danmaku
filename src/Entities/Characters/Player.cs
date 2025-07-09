@@ -13,7 +13,9 @@ namespace RaylibDanmaku.Entities.Characters
     /// </summary>
     internal class Player
     {
-        private IPlayerShot? Shot;
+        // Player shot types
+        private IPlayerShot? BulletShot;
+        private IPlayerShot? BeamShot;
 
         public Vector2 Position;
         public float MoveSpeed;
@@ -49,10 +51,8 @@ namespace RaylibDanmaku.Entities.Characters
 
         }
 
-        public void SetShot(IPlayerShot shotType)
-        {
-            Shot = shotType;
-        }
+        public void SetBulletShot(IPlayerShot? shot) => BulletShot = shot;
+        public void SetBeamShot(IPlayerShot? shot) => BeamShot = shot;
 
         public void Update(float deltaTime)
         {
@@ -72,22 +72,43 @@ namespace RaylibDanmaku.Entities.Characters
             if (Input.IsKeyDown(KeyboardKey.Down))
                 Position.Y += speed * deltaTime;
 
+
             if (Input.IsKeyDown(KeyboardKey.X) && shootTimer >= SHOOT_COOLDOWN)
             {
-                Shot?.Shoot(powerLevel);
+                BulletShot?.ShootBullet(powerLevel);
                 shootTimer = 0.0f;
+            }
+
+            if (Input.IsKeyPressed(KeyboardKey.X))
+            {
+                BeamShot?.ShootBeam(powerLevel);
+            }
+
+            if (Input.IsKeyReleased(KeyboardKey.X))
+            {
+                BeamShot?.StopShootBeam();
             }
 
             // Power level tests
             if (Input.IsKeyPressed(KeyboardKey.KpAdd) && powerLevel < MAX_POWER_LEVEL)
             {
                 powerLevel += 1;
+
+                // Reset beam state during level up
+                BeamShot?.StopShootBeam();
+                BeamShot?.ShootBeam(powerLevel);
+                
                 Console.WriteLine("Level increased! Current power level: " + powerLevel);
             }
 
             if (Input.IsKeyPressed(KeyboardKey.KpSubtract) && powerLevel > MIN_POWER_LEVEL)
             {
                 powerLevel -= 1;
+
+                // Reset beam state during level down
+                BeamShot?.StopShootBeam();
+                BeamShot?.ShootBeam(powerLevel);
+
                 Console.WriteLine("Level decreased! Current power level: " + powerLevel);
             }
 
@@ -98,7 +119,7 @@ namespace RaylibDanmaku.Entities.Characters
 
         public void Draw()
         {
-            EngineRender.QueueDrawTexture(TextureId, Position.X, Position.Y, TextureScale, rotation: 0.0f, color: NativeColor.White, layer: 2);
+            EngineRender.QueueDrawTexture(TextureId, Position.X, Position.Y, TextureScale, rotation: 0.0f, color: NativeColor.White, layer: 50);
         }
     }
 }

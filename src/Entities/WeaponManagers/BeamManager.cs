@@ -14,13 +14,13 @@ namespace RaylibDanmaku.Entities.WeaponManagers
     /// </summary>
     internal class BeamManager
     {
-        private const int MAX_BEAMS = 128;
+        private const int MAX_BEAMS = 64;
         private readonly Beam[] playerBeams = new Beam[MAX_BEAMS];
         private readonly Beam[] enemyBeams = new Beam[MAX_BEAMS];
 
         public static int PlayerBeamTextureId;
-        private const int PLAYER_BEAM_LAYER = 3;
-        private const int ENEMY_BEAM_LAYER = 4;
+        private const int PLAYER_BEAM_LAYER = 2;
+        private const int ENEMY_BEAM_LAYER = 3;
 
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace RaylibDanmaku.Entities.WeaponManagers
             }
         }
 
-        public void SpawnBeam(
+        public Beam? SpawnBeam(
             BeamOwner owner,
             Vector2 startPosition,
             float rotation,
@@ -45,16 +45,16 @@ namespace RaylibDanmaku.Entities.WeaponManagers
             Func<Vector2>? followTargetFunc = null)
         {
             Beam[] pool = owner == BeamOwner.PLAYER ? playerBeams : enemyBeams;
-
             for (int i = 0; i < pool.Length; i++)
             {
                 if (!pool[i].Active)
                 {
                     pool[i].Activate(owner, startPosition, rotation, scale, tint, textureId, followTargetFunc);
-                    return;
+                    return pool[i];
                 }
             }
             Trace.TraceWarning("[BeamManager.SpawnBeam()] Too many active beams! Max: " + MAX_BEAMS);
+            return null;
         }
 
         public void Update()
@@ -63,7 +63,7 @@ namespace RaylibDanmaku.Entities.WeaponManagers
             // UpdatePool(enemyBeams);
         }
 
-        private void UpdatePool(Beam[] pool)
+        private static void UpdatePool(Beam[] pool)
         {
             foreach (var beam in pool)
             {
@@ -80,8 +80,10 @@ namespace RaylibDanmaku.Entities.WeaponManagers
         public void Draw()
         {
             // Console.WriteLine("[BeamManager.Draw()] Draw called");
+
             DrawPool(playerBeams, PLAYER_BEAM_LAYER);
-            DrawPool(enemyBeams, ENEMY_BEAM_LAYER);
+            DrawActiveBeamCount();
+            // DrawPool(enemyBeams, ENEMY_BEAM_LAYER);
         }
 
         private static void DrawPool(Beam[] pool, int layer)
@@ -101,6 +103,21 @@ namespace RaylibDanmaku.Entities.WeaponManagers
                     layer
                 );
             }
+        }
+
+        private void DrawActiveBeamCount()
+        {
+            EngineRender.QueueDrawText("Active beams: " + CountActiveBeams(), x: 10, y: 80, fontSize: 20, color: NativeColor.White, layer: 100);
+        }
+
+        private int CountActiveBeams()
+        {
+            int activeBeamCount = 0;
+            for (int i = 0; i < MAX_BEAMS; i++)
+            {
+                if (playerBeams[i].Active) activeBeamCount++;
+            }
+            return activeBeamCount;
         }
     }
 }
