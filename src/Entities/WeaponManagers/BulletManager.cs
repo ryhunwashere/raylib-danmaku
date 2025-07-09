@@ -100,7 +100,7 @@ namespace RaylibDanmaku.Entities.WeaponManagers
             {
                 if (!bullet.Active) continue;
 
-                EngineRender.QueueDraw(
+                EngineRender.QueueDrawTexture(
                     bullet.TextureId,
                     bullet.Position.X,
                     bullet.Position.Y,

@@ -91,7 +91,7 @@ namespace RaylibDanmaku.Entities.WeaponManagers
                 if (!beam.Active) continue;
 
                 // Console.WriteLine($"[BeamManager.DrawPool()] Drawing beam at pos: {beam.Position}, layer: {layer}");
-                EngineRender.QueueDraw(
+                EngineRender.QueueDrawTexture(
                     beam.TextureId,
                     beam.Position.X,
                     beam.Position.Y,

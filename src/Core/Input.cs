@@ -19,5 +19,11 @@ namespace RaylibDanmaku.Core
         {
             return EngineInput.IsKeyPressedNative((int)key) != 0;
         }
+
+        /// <summary> Returns true if the key was released on this frame. </summary>
+        public static bool IsKeyReleased(KeyboardKey key)
+        {
+            return EngineInput.IsKeyReleasedNative((int)key) != 0;
+        }
     }
 }

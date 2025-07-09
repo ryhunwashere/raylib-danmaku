@@ -72,7 +72,7 @@ namespace RaylibDanmaku.Entities.Characters
             if (Input.IsKeyDown(KeyboardKey.Down))
                 Position.Y += speed * deltaTime;
 
-            if (Input.IsKeyDown(KeyboardKey.X) && (shootTimer >= SHOOT_COOLDOWN))
+            if (Input.IsKeyDown(KeyboardKey.X) && shootTimer >= SHOOT_COOLDOWN)
             {
                 Shot?.Shoot(powerLevel);
                 shootTimer = 0.0f;
@@ -98,7 +98,7 @@ namespace RaylibDanmaku.Entities.Characters
 
         public void Draw()
         {
-            EngineRender.QueueDraw(TextureId, Position.X, Position.Y, TextureScale, rotation: 0.0f, tint: NativeColor.White, layer: 2);
+            EngineRender.QueueDrawTexture(TextureId, Position.X, Position.Y, TextureScale, rotation: 0.0f, color: NativeColor.White, layer: 2);
         }
     }
 }

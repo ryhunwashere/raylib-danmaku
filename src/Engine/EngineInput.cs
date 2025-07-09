@@ -12,5 +12,8 @@ namespace RaylibDanmaku.Engine
 
         [LibraryImport("native_renderer.dll")]
         public static partial int IsKeyPressedNative(int key);
+
+        [LibraryImport("native_renderer.dll")]
+        public static partial int IsKeyReleasedNative(int key);
     }
 }
