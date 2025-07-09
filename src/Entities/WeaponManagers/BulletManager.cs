@@ -91,7 +91,7 @@ namespace RaylibDanmaku.Entities.WeaponManagers
         public void Draw()
         {
             DrawPool(playerBullets);
-            // DrawPool(enemyBullets);
+            DrawActiveBulletCount();
         }
 
         private static void DrawPool(Bullet[] pool)
@@ -111,6 +111,22 @@ namespace RaylibDanmaku.Entities.WeaponManagers
                 );
             }
         }
+
+        private void DrawActiveBulletCount()
+        {
+            EngineRender.QueueDrawText("Active bullets: " + CountActiveBullets(), x: 10, y: 40, fontSize: 20, color: NativeColor.White, layer: 10);
+        }
+
+        private int CountActiveBullets()
+        {
+            int activeBulletCount = 0;
+            for (int i = 0; i < MAX_BULLETS; i++)
+            {
+                if (playerBullets[i].Active) activeBulletCount++;
+            }
+            return activeBulletCount;
+        }
+
 
     }
 }
