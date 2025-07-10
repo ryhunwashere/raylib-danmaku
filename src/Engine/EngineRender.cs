@@ -26,8 +26,5 @@ namespace RaylibDanmaku.Engine
 
         [LibraryImport("native_renderer.dll")]
         public static partial void ShutdownRender();
-
-        [LibraryImport("native_renderer.dll", StringMarshalling = StringMarshalling.Utf8)]
-        public static partial int LoadTextureFromFile(string filePath);
     }
 }

@@ -30,10 +30,10 @@ namespace RaylibDanmaku.Entities.Characters
             bulletManager = new BulletManager();
             beamManager = new BeamManager();
 
-            int bulletTextureId = EngineRender.LoadTextureFromFile("assets/Bullets/PlayerBullet1.png");
+            int bulletTextureId = EngineTexture.LoadTextureFromFile("assets/Bullets/PlayerBullet1.png");
             BulletManager.PlayerBulletTextureId = bulletTextureId;
 
-            int beamTextureId = EngineRender.LoadTextureFromFile("assets/Beams/PlayerBeam1.png");
+            int beamTextureId = EngineTexture.LoadTextureFromFile("assets/Beams/PlayerBeam1.png");
             BeamManager.PlayerBeamTextureId = beamTextureId;
 
             player = new Player(
@@ -68,10 +68,10 @@ namespace RaylibDanmaku.Entities.Characters
         /// <summary>
         /// Initialize player based on selected player ID.
         /// </summary>
-        /// <param name="playerId">Select between player type 1 or 3.</param>
+        /// <param name="playerId">Select between player type 1 to 3.</param>
         public static void InitSelectedPlayer(int playerId)
         {
-            Trace.Assert(playerId >= 1 && playerId <= 3, "You can only choose between playerId 1 or 3!");
+            Trace.Assert(playerId >= 1 && playerId <= 3, "You can only choose between playerId 1 to 3!");
             switch (playerId)
             {
                 case 1:
@@ -95,7 +95,7 @@ namespace RaylibDanmaku.Entities.Characters
                     break;
 
                 case 3:
-                    // character that can shoot both beam and bullets
+                    // TODO: character that can shoot both beam and bullets maybe
                     break;
 
                 default:

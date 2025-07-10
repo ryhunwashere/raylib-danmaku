@@ -32,12 +32,15 @@ namespace RaylibDanmaku.Entities.Characters
         public const int MIN_POWER_LEVEL = 0;
         public const int MAX_POWER_LEVEL = 4;
 
+        public void SetBulletShot(IPlayerShot? shot) => BulletShot = shot;
+        public void SetBeamShot(IPlayerShot? shot) => BeamShot = shot;
+
         public Player(float moveSpeed, float slowMoveSpeed, float hitboxRadius, string spritePath, float scale)
         {
             if (string.IsNullOrEmpty(spritePath))
                 throw new ArgumentException("Player spritePath must not be null or empty.");
 
-            TextureId = EngineRender.LoadTextureFromFile(spritePath);
+            TextureId = EngineTexture.LoadTextureFromFile(spritePath);
             TextureScale = scale;
 
             if (TextureId < 0)
@@ -48,11 +51,8 @@ namespace RaylibDanmaku.Entities.Characters
             SlowMoveSpeed = slowMoveSpeed;
             HitboxRadius = hitboxRadius;
             GrazeRadius = hitboxRadius * GRAZE_RADIUS_MULT;
-
         }
 
-        public void SetBulletShot(IPlayerShot? shot) => BulletShot = shot;
-        public void SetBeamShot(IPlayerShot? shot) => BeamShot = shot;
 
         public void Update(float deltaTime)
         {
@@ -72,44 +72,33 @@ namespace RaylibDanmaku.Entities.Characters
             if (Input.IsKeyDown(KeyboardKey.Down))
                 Position.Y += speed * deltaTime;
 
-
             if (Input.IsKeyDown(KeyboardKey.X) && shootTimer >= SHOOT_COOLDOWN)
             {
                 BulletShot?.ShootBullet(powerLevel);
                 shootTimer = 0.0f;
             }
-
             if (Input.IsKeyPressed(KeyboardKey.X))
-            {
                 BeamShot?.ShootBeam(powerLevel);
-            }
-
             if (Input.IsKeyReleased(KeyboardKey.X))
-            {
                 BeamShot?.StopShootBeam();
-            }
 
             // Power level tests
             if (Input.IsKeyPressed(KeyboardKey.KpAdd) && powerLevel < MAX_POWER_LEVEL)
             {
                 powerLevel += 1;
 
-                // Reset beam state during level up
+                // Reset beam shooting states
                 BeamShot?.StopShootBeam();
                 BeamShot?.ShootBeam(powerLevel);
-                
-                Console.WriteLine("Level increased! Current power level: " + powerLevel);
             }
 
             if (Input.IsKeyPressed(KeyboardKey.KpSubtract) && powerLevel > MIN_POWER_LEVEL)
             {
                 powerLevel -= 1;
 
-                // Reset beam state during level down
+                // Reset beam shooting state
                 BeamShot?.StopShootBeam();
                 BeamShot?.ShootBeam(powerLevel);
-
-                Console.WriteLine("Level decreased! Current power level: " + powerLevel);
             }
 
             // Clamp movement to window size
