@@ -12,7 +12,7 @@ namespace RaylibDanmaku.Core
         private static Player? player;
         private static BulletManager? bulletManager;
         private static BeamManager? beamManager;
-        
+
         public static void InitGame()
         {
             EngineRender.InitRender(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, Config.WINDOW_NAME, Config.TARGET_FPS);

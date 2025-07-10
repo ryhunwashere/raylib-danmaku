@@ -32,7 +32,7 @@ namespace RaylibDanmaku.Entities.WeaponManagers
             float speed,
             float scale,
             float rotation,
-            NativeColor tint,
+            NativeColor color,
             float lifetimeSec,
             int textureId)
         {
@@ -50,7 +50,7 @@ namespace RaylibDanmaku.Entities.WeaponManagers
                         Speed = speed,
                         Scale = scale,
                         Rotation = rotation,
-                        Tint = tint,
+                        Color = color,
                         Lifetime = lifetimeSec,
                         TextureId = textureId,
                         Active = true
@@ -106,7 +106,7 @@ namespace RaylibDanmaku.Entities.WeaponManagers
                     bullet.Position.Y,
                     bullet.Scale,
                     bullet.Rotation,
-                    bullet.Tint,
+                    bullet.Color,
                     layer: bullet.Owner == BulletOwner.PLAYER ? PLAYER_BULLET_LAYER : ENEMY_BULLET_LAYER
                 );
             }

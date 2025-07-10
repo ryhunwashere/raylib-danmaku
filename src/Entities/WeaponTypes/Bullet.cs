@@ -17,7 +17,7 @@ namespace RaylibDanmaku.Entities.WeaponTypes
         public float Speed;
         public float Scale;
         public float Rotation;
-        public NativeColor Tint;
+        public NativeColor Color;
         public int TextureId;
         public float Lifetime;
         public bool Active;

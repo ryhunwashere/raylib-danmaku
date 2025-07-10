@@ -25,8 +25,11 @@ namespace RaylibDanmaku.Entities.Characters
         private const float GRAZE_RADIUS_MULT = 4.0f;
         public int TextureId;
         public float TextureScale { get; private set; }
+
         private const float SHOOT_COOLDOWN = 0.1f;
         private float shootTimer = 0.0f;
+        private const float BOMB_COOLDOWN = 1.0f;
+        private float bombTimer = 0.0f;
 
         private int powerLevel = 0;
         public const int MIN_POWER_LEVEL = 0;
@@ -40,25 +43,25 @@ namespace RaylibDanmaku.Entities.Characters
             if (string.IsNullOrEmpty(spritePath))
                 throw new ArgumentException("Player spritePath must not be null or empty.");
 
-            TextureId = EngineTexture.LoadTextureFromFile(spritePath);
+            TextureId = EngineTexture.LoadTexture(spritePath);
             TextureScale = scale;
 
             if (TextureId < 0)
                 Trace.TraceWarning("Failed to load player texture!");
 
-            Position = new Vector2(500, 500);   // don't mind the magic numbers, it's just to test the player spawning.
+            Position = new Vector2(500, 500);   // don't mind the magic numbers
             MoveSpeed = moveSpeed;
             SlowMoveSpeed = slowMoveSpeed;
             HitboxRadius = hitboxRadius;
             GrazeRadius = hitboxRadius * GRAZE_RADIUS_MULT;
         }
 
-
         public void Update(float deltaTime)
         {
             float speed = MoveSpeed;
             float slowSpeed = SlowMoveSpeed;
             shootTimer += deltaTime;
+            bombTimer += deltaTime;
 
             if (Input.IsKeyDown(KeyboardKey.LeftShift))
                 speed = slowSpeed;
@@ -81,13 +84,24 @@ namespace RaylibDanmaku.Entities.Characters
                 BeamShot?.ShootBeam(powerLevel);
             if (Input.IsKeyReleased(KeyboardKey.X))
                 BeamShot?.StopShootBeam();
+            
+            // TODO: Bomb system
+            if (Input.IsKeyPressed(KeyboardKey.Space))
+            {
+                if (bombTimer >= BOMB_COOLDOWN)
+                {
+                    Console.WriteLine("FIRE IN THE HOLE!");
+                    bombTimer = 0.0f;
+                }
+                else
+                    Console.WriteLine("Bomb is still on cooldown!");
+            }
 
             // Power level tests
             if (Input.IsKeyPressed(KeyboardKey.KpAdd) && powerLevel < MAX_POWER_LEVEL)
             {
                 powerLevel += 1;
 
-                // Reset beam shooting states
                 BeamShot?.StopShootBeam();
                 BeamShot?.ShootBeam(powerLevel);
             }
@@ -96,7 +110,6 @@ namespace RaylibDanmaku.Entities.Characters
             {
                 powerLevel -= 1;
 
-                // Reset beam shooting state
                 BeamShot?.StopShootBeam();
                 BeamShot?.ShootBeam(powerLevel);
             }

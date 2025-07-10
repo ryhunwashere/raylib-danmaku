@@ -30,10 +30,10 @@ namespace RaylibDanmaku.Entities.Characters
             bulletManager = new BulletManager();
             beamManager = new BeamManager();
 
-            int bulletTextureId = EngineTexture.LoadTextureFromFile("assets/Bullets/PlayerBullet1.png");
+            int bulletTextureId = EngineTexture.LoadTexture("assets/Bullets/PlayerBullet1.png");
             BulletManager.PlayerBulletTextureId = bulletTextureId;
 
-            int beamTextureId = EngineTexture.LoadTextureFromFile("assets/Beams/PlayerBeam1.png");
+            int beamTextureId = EngineTexture.LoadTexture("assets/Beams/PlayerBeam1.png");
             BeamManager.PlayerBeamTextureId = beamTextureId;
 
             player = new Player(
@@ -50,9 +50,7 @@ namespace RaylibDanmaku.Entities.Characters
                 player.SetBulletShot(bulletShot);
             }
             else
-            {
                 player.SetBulletShot(null); // explicitly set to null
-            }
 
             if (hasBeamShot)
             {
@@ -60,18 +58,16 @@ namespace RaylibDanmaku.Entities.Characters
                 player.SetBeamShot(beamShot);
             }
             else
-            {
                 player.SetBeamShot(null);
-            }
         }
 
-        /// <summary>
-        /// Initialize player based on selected player ID.
-        /// </summary>
-        /// <param name="playerId">Select between player type 1 to 3.</param>
+        /// <summary>Initialize player based on selected player ID. </summary>
+        /// <param name="playerId"> Select between player type 1 to 3.</param>
         public static void InitSelectedPlayer(int playerId)
         {
-            Trace.Assert(playerId >= 1 && playerId <= 3, "You can only choose between playerId 1 to 3!");
+            if (playerId < 1 || playerId > 3)
+                throw new ArgumentOutOfRangeException(nameof(playerId));
+
             switch (playerId)
             {
                 case 1:
@@ -83,7 +79,6 @@ namespace RaylibDanmaku.Entities.Characters
                         hasBulletShot: true,
                         hasBeamShot: false);
                     break;
-
                 case 2:
                     SelectPlayer(
                         moveSpeed: 850.0f,
@@ -93,11 +88,9 @@ namespace RaylibDanmaku.Entities.Characters
                         hasBulletShot: false,
                         hasBeamShot: true);
                     break;
-
                 case 3:
                     // TODO: character that can shoot both beam and bullets maybe
                     break;
-
                 default:
                     Trace.TraceWarning("[PlayerManager] Cannot construct player due to invalid playerId.");
                     break;
