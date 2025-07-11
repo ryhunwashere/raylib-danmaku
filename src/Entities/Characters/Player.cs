@@ -9,9 +9,7 @@ using RaylibDanmaku.Entities.PlayerShotTypes;
 
 namespace RaylibDanmaku.Entities.Characters
 {
-    /// <summary>
-    /// Player constructor and input controls.
-    /// </summary>
+    /// <summary> Player constructor and input controls. </summary>
     internal class Player
     {
         // Player shot types
@@ -27,9 +25,10 @@ namespace RaylibDanmaku.Entities.Characters
         public int TextureId;
         public float TextureScale { get; private set; }
 
+        // Timers in seconds
         private const float SHOOT_COOLDOWN = 0.1f;
         private float shootTimer = 0.0f;
-        private const float BOMB_COOLDOWN = 1.0f;
+        private const float BOMB_COOLDOWN = 3.0f;
         private float bombTimer = 0.0f;
 
         private int powerLevel = 0;
@@ -39,6 +38,13 @@ namespace RaylibDanmaku.Entities.Characters
         public void SetBulletShot(IPlayerShot? shot) => BulletShot = shot;
         public void SetBeamShot(IPlayerShot? shot) => BeamShot = shot;
 
+        /// <summary> Constructs and initialize a player character. </summary>
+        /// <param name="moveSpeed"> Base movement speed of the player character. </param>
+        /// <param name="slowMoveSpeed"> Movement speed on slow mode of the player character. </param>
+        /// <param name="hitboxRadius"> Circular hitbox relative to the player's center. </param>
+        /// <param name="spritePath"> Directory path of the player's sprite. </param>
+        /// <param name="scale"> Multiply the player's sprite size by the provided scale. </param>
+        /// <exception cref="ArgumentException"></exception>
         public Player(float moveSpeed, float slowMoveSpeed, float hitboxRadius, string spritePath, float scale)
         {
             if (string.IsNullOrEmpty(spritePath))
@@ -55,6 +61,7 @@ namespace RaylibDanmaku.Entities.Characters
             SlowMoveSpeed = slowMoveSpeed;
             HitboxRadius = hitboxRadius;
             GrazeRadius = hitboxRadius * GRAZE_RADIUS_MULT;
+            bombTimer = BOMB_COOLDOWN;
         }
 
         public void Update(float deltaTime)
@@ -95,7 +102,10 @@ namespace RaylibDanmaku.Entities.Characters
                     bombTimer = 0.0f;
                 }
                 else
-                    Console.WriteLine("Bomb is still on cooldown!");
+                {
+                    float timeLeft = MathF.Round(BOMB_COOLDOWN - bombTimer, digits: 1);
+                    Console.WriteLine("Bomb is still on cooldown! Time left: " + timeLeft + "s");
+                }
             }
 
             // Power level tests
@@ -116,8 +126,8 @@ namespace RaylibDanmaku.Entities.Characters
             }
 
             // Clamp movement to window size
-            Position.X = Raymath.Clamp(Position.X, HitboxRadius, Config.SCREEN_WIDTH - HitboxRadius);
-            Position.Y = Raymath.Clamp(Position.Y, HitboxRadius, Config.SCREEN_HEIGHT - HitboxRadius);
+            Position.X = Math.Clamp(Position.X, HitboxRadius, Config.SCREEN_WIDTH - HitboxRadius);
+            Position.Y = Math.Clamp(Position.Y, HitboxRadius, Config.SCREEN_HEIGHT - HitboxRadius);
         }
 
         public void Draw()
