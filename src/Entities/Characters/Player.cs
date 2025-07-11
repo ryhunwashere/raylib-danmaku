@@ -5,7 +5,7 @@ using Raylib_cs;
 using RaylibDanmaku.Core;
 using RaylibDanmaku.Structs;
 using RaylibDanmaku.Engine;
-using RaylibDanmaku.Entities.PlayerShotTypes;
+using RaylibDanmaku.Entities.IPlayerShotTypes;
 
 namespace RaylibDanmaku.Entities.Characters
 {
@@ -13,8 +13,8 @@ namespace RaylibDanmaku.Entities.Characters
     internal class Player
     {
         // Player shot types
-        private IPlayerShot? BulletShot;
-        private IPlayerShot? BeamShot;
+        private BulletShot? BulletShot;
+        private BeamShot? BeamShot;
 
         public Vector2 Position;
         public float MoveSpeed;
@@ -35,8 +35,8 @@ namespace RaylibDanmaku.Entities.Characters
         public const int MIN_POWER_LEVEL = 0;
         public const int MAX_POWER_LEVEL = 4;
 
-        public void SetBulletShot(IPlayerShot? shot) => BulletShot = shot;
-        public void SetBeamShot(IPlayerShot? shot) => BeamShot = shot;
+        public void SetBulletShot(BulletShot? shot) => BulletShot = shot;
+        public void SetBeamShot(BeamShot? shot) => BeamShot = shot;
 
         /// <summary> Constructs and initialize a player character. </summary>
         /// <param name="moveSpeed"> Base movement speed of the player character. </param>

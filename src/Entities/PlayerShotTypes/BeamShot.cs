@@ -7,9 +7,9 @@ using RaylibDanmaku.Entities.Characters;
 using RaylibDanmaku.Entities.WeaponManagers;
 using RaylibDanmaku.Entities.WeaponTypes;
 
-namespace RaylibDanmaku.Entities.PlayerShotTypes
+namespace RaylibDanmaku.Entities.IPlayerShotTypes
 {
-    internal class BeamShot(Player player, BeamManager beamManager) : IPlayerShot
+    internal class BeamShot(Player player, BeamManager beamManager) : IBeamShot
     {
         private readonly Player player = player;
         private readonly BeamManager beamManager = beamManager;
@@ -90,7 +90,5 @@ namespace RaylibDanmaku.Entities.PlayerShotTypes
             }
             activePlayerBeams.Clear();
         }
-
-        public void ShootBullet(int powerLevel) { } // useless function meant for bullets
     }
 }

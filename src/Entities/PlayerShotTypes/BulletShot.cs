@@ -5,9 +5,9 @@ using RaylibDanmaku.Structs;
 using RaylibDanmaku.Entities.Characters;
 using RaylibDanmaku.Entities.WeaponManagers;
 
-namespace RaylibDanmaku.Entities.PlayerShotTypes
+namespace RaylibDanmaku.Entities.IPlayerShotTypes
 {
-    internal class BulletShot(Player player, BulletManager bulletManager) : IPlayerShot
+    internal class BulletShot(Player player, BulletManager bulletManager) : IBulletShot
     {
         private readonly Player player = player;
         private readonly BulletManager bulletManager = bulletManager;
@@ -72,9 +72,5 @@ namespace RaylibDanmaku.Entities.PlayerShotTypes
                     break;
             }
         }
-
-        // Useless functions, because these two were meant for beams
-        public void ShootBeam(int powerLevel){}
-        public void StopShootBeam(){}
     }
 }

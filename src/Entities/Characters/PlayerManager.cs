@@ -2,7 +2,7 @@ using System.Diagnostics;
 using RaylibDanmaku.Engine;
 using RaylibDanmaku.Core;
 using RaylibDanmaku.Entities.WeaponManagers;
-using RaylibDanmaku.Entities.PlayerShotTypes;
+using RaylibDanmaku.Entities.IPlayerShotTypes;
 
 namespace RaylibDanmaku.Entities.Characters
 {
@@ -19,7 +19,7 @@ namespace RaylibDanmaku.Entities.Characters
         public static BulletManager? GetBulletManager() => bulletManager;
         public static BeamManager? GetBeamManager() => beamManager;
 
-        private static void SelectPlayer(
+        private static void InitPlayer(
             float moveSpeed,
             float slowMoveSpeed,
             float hitboxRadius,
@@ -46,7 +46,7 @@ namespace RaylibDanmaku.Entities.Characters
 
             if (hasBulletShot)
             {
-                var bulletShot = new BulletShot(player, bulletManager);
+                BulletShot bulletShot = new(player, bulletManager);
                 player.SetBulletShot(bulletShot);
             }
             else
@@ -54,7 +54,7 @@ namespace RaylibDanmaku.Entities.Characters
 
             if (hasBeamShot)
             {
-                var beamShot = new BeamShot(player, beamManager);
+                BeamShot beamShot = new(player, beamManager);
                 player.SetBeamShot(beamShot);
             }
             else
@@ -71,7 +71,7 @@ namespace RaylibDanmaku.Entities.Characters
             switch (playerId)
             {
                 case 1:
-                    SelectPlayer(
+                    InitPlayer(
                         moveSpeed: 700.0f,
                         slowMoveSpeed: 300.0f,
                         hitboxRadius: 4.0f,
@@ -80,7 +80,7 @@ namespace RaylibDanmaku.Entities.Characters
                         hasBeamShot: false);
                     break;
                 case 2:
-                    SelectPlayer(
+                    InitPlayer(
                         moveSpeed: 850.0f,
                         slowMoveSpeed: 200.0f,
                         hitboxRadius: 3.0f,
