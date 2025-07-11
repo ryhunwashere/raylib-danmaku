@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Numerics;
 
 using RaylibDanmaku.Structs;
@@ -38,8 +37,11 @@ namespace RaylibDanmaku.Entities.IPlayerShotTypes
 
         public void ShootBullet(int powerLevel)
         {
-            Trace.Assert(powerLevel >= Player.MIN_POWER_LEVEL && powerLevel <= Player.MAX_POWER_LEVEL,
-            "Shoot failed! Player power level must be between " + Player.MIN_POWER_LEVEL + " to " + Player.MAX_POWER_LEVEL + ".");
+            if (powerLevel < PlayerPower.MIN_POWER_LEVEL || powerLevel > PlayerPower.MAX_POWER_LEVEL)
+            {
+                throw new ArgumentOutOfRangeException(nameof(powerLevel),
+                "[BulletShot] Player power level exceeds allowed range (" + PlayerPower.MIN_POWER_LEVEL + "-" + PlayerPower.MAX_POWER_LEVEL + ").");
+            }
 
             switch (powerLevel)
             {

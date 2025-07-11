@@ -50,7 +50,7 @@ namespace RaylibDanmaku.Entities.Characters
                 player.SetBulletShot(bulletShot);
             }
             else
-                player.SetBulletShot(null); // explicitly set to null
+                player.SetBulletShot(null);
 
             if (hasBeamShot)
             {
