@@ -1,6 +1,6 @@
 using System.Numerics;
 
-using RaylibDanmaku.Core;
+using RaylibDanmaku.Structs;
 using RaylibDanmaku.Entities.WeaponManagers;
 
 namespace RaylibDanmaku.Entities.WeaponTypes

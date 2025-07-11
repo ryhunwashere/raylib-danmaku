@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-using RaylibDanmaku.Core;
+using RaylibDanmaku.Structs;
 
 namespace RaylibDanmaku.Engine
 {

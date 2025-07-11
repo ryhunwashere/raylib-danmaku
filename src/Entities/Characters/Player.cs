@@ -3,6 +3,7 @@ using System.Numerics;
 
 using Raylib_cs;
 using RaylibDanmaku.Core;
+using RaylibDanmaku.Structs;
 using RaylibDanmaku.Engine;
 using RaylibDanmaku.Entities.PlayerShotTypes;
 

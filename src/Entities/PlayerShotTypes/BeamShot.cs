@@ -2,6 +2,7 @@ using System.Numerics;
 
 using RaylibDanmaku.Core;
 using RaylibDanmaku.Engine;
+using RaylibDanmaku.Structs;
 using RaylibDanmaku.Entities.Characters;
 using RaylibDanmaku.Entities.WeaponManagers;
 using RaylibDanmaku.Entities.WeaponTypes;

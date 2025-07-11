@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Numerics;
 
+using RaylibDanmaku.Structs;
 using RaylibDanmaku.Core;
 using RaylibDanmaku.Engine;
 using RaylibDanmaku.Entities.WeaponTypes;
