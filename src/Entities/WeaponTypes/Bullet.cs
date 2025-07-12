@@ -3,23 +3,22 @@ using System.Numerics;
 using RaylibDanmaku.Structs;
 using RaylibDanmaku.Entities.WeaponManagers;
 
-namespace RaylibDanmaku.Entities.WeaponTypes
+namespace RaylibDanmaku.Entities.WeaponTypes;
+
+/// <summary>
+/// Represents a single bullet object.
+/// </summary>
+internal struct Bullet
 {
-    /// <summary>
-    /// Represents a single bullet object.
-    /// </summary>
-    internal struct Bullet
-    {
-        public BulletManager.BulletOwner Owner;
-        public BulletManager.BulletType Type;
-        public Vector2 Position;
-        public Vector2 Direction;
-        public float Speed;
-        public float Scale;
-        public float Rotation;
-        public NativeColor Color;
-        public int TextureId;
-        public float Lifetime;
-        public bool Active;
-    }
+    public BulletManager.BulletOwner Owner;
+    public BulletManager.BulletType Type;
+    public Vector2 Position;
+    public Vector2 Direction;
+    public float Speed;
+    public float Scale;
+    public float Rotation;
+    public NativeColor Color;
+    public int TextureId;
+    public float Lifetime;
+    public bool Active;
 }

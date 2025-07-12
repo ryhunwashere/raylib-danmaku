@@ -7,88 +7,87 @@ using RaylibDanmaku.Entities.Characters;
 using RaylibDanmaku.Entities.WeaponManagers;
 using RaylibDanmaku.Entities.WeaponTypes;
 
-namespace RaylibDanmaku.Entities.IPlayerShotTypes
+namespace RaylibDanmaku.Entities.IPlayerShotTypes;
+
+internal class BeamShot(Player player, BeamManager beamManager) : IBeamShot
 {
-    internal class BeamShot(Player player, BeamManager beamManager) : IBeamShot
+    private readonly Player player = player;
+    private readonly BeamManager beamManager = beamManager;
+
+    public List<Beam> activePlayerBeams = [];
+    private readonly float beamHeight = EngineTexture.GetTextureHeight(EngineTexture.GetTextureId("PlayerBeam1.png"));
+
+    private void SpawnPlayerBeam(float offsetX)
     {
-        private readonly Player player = player;
-        private readonly BeamManager beamManager = beamManager;
+        Vector2 beamStartPos = player.Position;
+        float beamScale = 2.0f;
+        float beamRotation = -90.0f;
+        NativeColor beamTint = NativeColor.Transparent;
 
-        public List<Beam> activePlayerBeams = [];
-        private readonly float beamHeight = EngineTexture.GetTextureHeight(EngineTexture.GetTextureId("PlayerBeam1.png"));
+        float scaledBeamHeight = beamHeight * beamScale;
 
-        private void SpawnPlayerBeam(float offsetX)
+        int beamCopies = Config.SCREEN_HEIGHT / (int)scaledBeamHeight + 1;
+
+        for (int i = 0; i < beamCopies; i++)
         {
-            Vector2 beamStartPos = player.Position;
-            float beamScale = 2.0f;
-            float beamRotation = -90.0f;
-            NativeColor beamTint = NativeColor.Transparent;
+            float offsetY = -(i * scaledBeamHeight + scaledBeamHeight / 2);
 
-            float scaledBeamHeight = beamHeight * beamScale;
+            var beam = beamManager.SpawnBeam(
+                BeamOwner.PLAYER,
+                beamStartPos,
+                beamRotation,
+                beamScale,
+                beamTint,
+                textureId: BeamManager.PlayerBeamTextureId,
+                followTargetFunc: () => player.Position + new Vector2(offsetX, offsetY)
+            );
 
-            int beamCopies = Config.SCREEN_HEIGHT / (int)scaledBeamHeight + 1;
+            if (beam != null)
+                activePlayerBeams.Add(beam);
+        }
+    }
 
-            for (int i = 0; i < beamCopies; i++)
+    public void ShootBeam(int powerLevel)
+    {
+        if (activePlayerBeams.Count == 0)  // only spawn beams if none are active
+        {
+            switch (powerLevel)
             {
-                float offsetY = -(i * scaledBeamHeight + scaledBeamHeight / 2);
-
-                var beam = beamManager.SpawnBeam(
-                    BeamOwner.PLAYER,
-                    beamStartPos,
-                    beamRotation,
-                    beamScale,
-                    beamTint,
-                    textureId: BeamManager.PlayerBeamTextureId,
-                    followTargetFunc: () => player.Position + new Vector2(offsetX, offsetY)
-                );
-
-                if (beam != null)
-                    activePlayerBeams.Add(beam);
+                case 0:
+                    SpawnPlayerBeam(0.0f);
+                    break;
+                case 1:
+                    SpawnPlayerBeam(offsetX: 30.0f);
+                    SpawnPlayerBeam(offsetX: -30.0f);
+                    break;
+                case 2:
+                    SpawnPlayerBeam(offsetX: 60.0f);
+                    SpawnPlayerBeam(offsetX: 0.0f);
+                    SpawnPlayerBeam(offsetX: -60.0f);
+                    break;
+                case 3:
+                    SpawnPlayerBeam(offsetX: 90.0f);
+                    SpawnPlayerBeam(offsetX: 30.0f);
+                    SpawnPlayerBeam(offsetX: -30.0f);
+                    SpawnPlayerBeam(offsetX: -90.0f);
+                    break;
+                case 4:
+                    SpawnPlayerBeam(offsetX: 120.0f);
+                    SpawnPlayerBeam(offsetX: 60.0f);
+                    SpawnPlayerBeam(offsetX: 0.0f);
+                    SpawnPlayerBeam(offsetX: -60.0f);
+                    SpawnPlayerBeam(offsetX: -120.0f);
+                    break;
             }
         }
+    }
 
-        public void ShootBeam(int powerLevel)
+    public void StopShootBeam()
+    {
+        foreach (var beam in activePlayerBeams)
         {
-            if (activePlayerBeams.Count == 0)  // only spawn beams if none are active
-            {
-                switch (powerLevel)
-                {
-                    case 0:
-                        SpawnPlayerBeam(0.0f);
-                        break;
-                    case 1:
-                        SpawnPlayerBeam(offsetX: 30.0f);
-                        SpawnPlayerBeam(offsetX: -30.0f);
-                        break;
-                    case 2:
-                        SpawnPlayerBeam(offsetX: 60.0f);
-                        SpawnPlayerBeam(offsetX: 0.0f);
-                        SpawnPlayerBeam(offsetX: -60.0f);
-                        break;
-                    case 3:
-                        SpawnPlayerBeam(offsetX: 90.0f);
-                        SpawnPlayerBeam(offsetX: 30.0f);
-                        SpawnPlayerBeam(offsetX: -30.0f);
-                        SpawnPlayerBeam(offsetX: -90.0f);
-                        break;
-                    case 4:
-                        SpawnPlayerBeam(offsetX: 120.0f);
-                        SpawnPlayerBeam(offsetX: 60.0f);
-                        SpawnPlayerBeam(offsetX: 0.0f);
-                        SpawnPlayerBeam(offsetX: -60.0f);
-                        SpawnPlayerBeam(offsetX: -120.0f);
-                        break;
-                }
-            }
+            beam.Deactivate();
         }
-
-        public void StopShootBeam()
-        {
-            foreach (var beam in activePlayerBeams)
-            {
-                beam.Deactivate();
-            }
-            activePlayerBeams.Clear();
-        }
+        activePlayerBeams.Clear();
     }
 }
