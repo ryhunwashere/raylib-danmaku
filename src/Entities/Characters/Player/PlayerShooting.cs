@@ -4,47 +4,47 @@ namespace RaylibDanmaku.Entities.Characters.Player;
 
 internal class PlayerShooting(float cooldownTime)
 {
-    private BulletShot? bulletShot;
-    private BeamShot? beamShot;
-    private readonly BulletCooldown bulletCooldown = new(cooldownTime);
+    private BulletShot? _bulletShot;
+    private BeamShot? _beamShot;
+    private readonly BulletCooldown _bulletCooldown = new(cooldownTime);
 
     public void Update(float deltaTime)
     {
-        bulletCooldown.Update(deltaTime);
+        _bulletCooldown.Update(deltaTime);
     }
 
     public void ShootBullet(PlayerPower playerPower)
     {
-        if (bulletCooldown.IsReady)
+        if (_bulletCooldown.IsReady)
         {
-            bulletShot?.ShootBullet(playerPower.PowerLevel);
-            bulletCooldown.Reset();
+            _bulletShot?.ShootBullet(playerPower.PowerLevel);
+            _bulletCooldown.Reset();
         }
     }
 
     public void ShootBeam(PlayerPower playerPower)
     {
-        beamShot?.ShootBeam(playerPower.PowerLevel);
+        _beamShot?.ShootBeam(playerPower.PowerLevel);
     }
 
     public void StopBeam()
     {
-        beamShot?.StopShootBeam();
+        _beamShot?.StopShootBeam();
     }
 
     public void RestartBeam(PlayerPower playerPower)
     {
-        beamShot?.StopShootBeam();
-        beamShot?.ShootBeam(playerPower.PowerLevel);
+        _beamShot?.StopShootBeam();
+        _beamShot?.ShootBeam(playerPower.PowerLevel);
     }
 
     public void SetBulletShot(BulletShot? bulletShot)
     {
-        this.bulletShot = bulletShot;
+        _bulletShot = bulletShot;
     }
 
     public void SetBeamShot(BeamShot? beamShot)
     {
-        this.beamShot = beamShot;
+        _beamShot = beamShot;
     }
 }

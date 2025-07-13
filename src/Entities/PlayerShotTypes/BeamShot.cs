@@ -11,11 +11,8 @@ namespace RaylibDanmaku.Entities.IPlayerShotTypes;
 
 internal class BeamShot(Player player, BeamManager beamManager) : IBeamShot
 {
-    private readonly Player player = player;
-    private readonly BeamManager beamManager = beamManager;
-
     public List<Beam> activePlayerBeams = [];
-    private readonly float beamHeight = EngineTexture.GetTextureHeight(EngineTexture.GetTextureId("PlayerBeam1.png"));
+    private readonly float _beamHeight = EngineTexture.GetTextureHeight(EngineTexture.GetTextureId("PlayerBeam1.png"));
 
     private void SpawnPlayerBeam(float offsetX)
     {
@@ -24,9 +21,9 @@ internal class BeamShot(Player player, BeamManager beamManager) : IBeamShot
         float beamRotation = -90.0f;
         NativeColor beamTint = NativeColor.Transparent;
 
-        float scaledBeamHeight = beamHeight * beamScale;
+        float scaledBeamHeight = _beamHeight * beamScale;
 
-        int beamCopies = Config.SCREEN_HEIGHT / (int)scaledBeamHeight + 1;
+        int beamCopies = Config.ScreenHeight / (int)scaledBeamHeight + 1;
 
         for (int i = 0; i < beamCopies; i++)
         {
@@ -54,7 +51,7 @@ internal class BeamShot(Player player, BeamManager beamManager) : IBeamShot
             switch (powerLevel)
             {
                 case 0:
-                    SpawnPlayerBeam(0.0f);
+                    SpawnPlayerBeam(offsetX: 0.0f);
                     break;
                 case 1:
                     SpawnPlayerBeam(offsetX: 30.0f);

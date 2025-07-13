@@ -8,9 +8,6 @@ namespace RaylibDanmaku.Entities.IPlayerShotTypes;
 
 internal class BulletShot(Player player, BulletManager bulletManager) : IBulletShot
 {
-    private readonly Player player = player;
-    private readonly BulletManager bulletManager = bulletManager;
-
     private void SpawnPlayerBullet(float offsetX, float offsetY)
     {
         Vector2 bulletDir = new(0, -1);
@@ -37,10 +34,10 @@ internal class BulletShot(Player player, BulletManager bulletManager) : IBulletS
 
     public void ShootBullet(int powerLevel)
     {
-        if (powerLevel < PlayerPower.MIN_POWER_LEVEL || powerLevel > PlayerPower.MAX_POWER_LEVEL)
+        if (powerLevel < PlayerPower.MinPowerLevel || powerLevel > PlayerPower.MaxPowerLevel)
         {
             throw new ArgumentOutOfRangeException(nameof(powerLevel),
-            "[BulletShot] Player power level exceeds allowed range (" + PlayerPower.MIN_POWER_LEVEL + "-" + PlayerPower.MAX_POWER_LEVEL + ").");
+            "[BulletShot] Player power level exceeds allowed range (" + PlayerPower.MinPowerLevel + "-" + PlayerPower.MaxPowerLevel + ").");
         }
 
         switch (powerLevel)

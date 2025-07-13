@@ -7,8 +7,8 @@ namespace RaylibDanmaku.Core;
 /// </summary>
 internal static class Time
 {
-    private static readonly Stopwatch stopwatch = Stopwatch.StartNew();
-    private static float lastTime = 0f;
+    private static readonly Stopwatch _stopwatch = Stopwatch.StartNew();
+    private static float _lastTime = 0f;
 
     /// <summary>
     /// Get time between frames in seconds.
@@ -17,9 +17,9 @@ internal static class Time
 
     public static void Update()
     {
-        float currentTime = (float)stopwatch.Elapsed.TotalSeconds;
-        DeltaTime = currentTime - lastTime;
-        lastTime = currentTime;
+        float currentTime = (float)_stopwatch.Elapsed.TotalSeconds;
+        DeltaTime = currentTime - _lastTime;
+        _lastTime = currentTime;
     }
 
 }

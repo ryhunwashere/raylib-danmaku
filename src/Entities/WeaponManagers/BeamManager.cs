@@ -14,24 +14,21 @@ public enum BeamOwner { PLAYER, ENEMY }
 /// </summary>
 internal class BeamManager
 {
-    private const int MAX_BEAMS = 64;
-    private readonly Beam[] playerBeams = new Beam[MAX_BEAMS];
-    private readonly Beam[] enemyBeams = new Beam[MAX_BEAMS];
+    private const int MaxBeams = 64;
+    private readonly Beam[] _playerBeams = new Beam[MaxBeams];
+    private readonly Beam[] _enemyBeams = new Beam[MaxBeams];
 
     public static int PlayerBeamTextureId;
-    private const int PLAYER_BEAM_LAYER = 2;
-    private const int ENEMY_BEAM_LAYER = 3;
+    private const int PlayerBeamLayer = 2;
+    
 
-
-    /// <summary>
-    /// Initialize all beam slots so they're ready
-    /// </summary>
+    /// <summary> Initialize all beam slots so they're ready </summary>
     public BeamManager()
     {
-        for (int i = 0; i < MAX_BEAMS; i++)
+        for (int i = 0; i < MaxBeams; i++)
         {
-            playerBeams[i] = new Beam();
-            enemyBeams[i] = new Beam();
+            _playerBeams[i] = new Beam();
+            _enemyBeams[i] = new Beam();
         }
     }
 
@@ -44,7 +41,7 @@ internal class BeamManager
         int textureId,
         Func<Vector2>? followTargetFunc = null)
     {
-        Beam[] pool = owner == BeamOwner.PLAYER ? playerBeams : enemyBeams;
+        Beam[] pool = owner == BeamOwner.PLAYER ? _playerBeams : _enemyBeams;
         for (int i = 0; i < pool.Length; i++)
         {
             if (!pool[i].Active)
@@ -53,14 +50,14 @@ internal class BeamManager
                 return pool[i];
             }
         }
-        Trace.TraceWarning("[BeamManager.SpawnBeam()] Too many active beams! Max: " + MAX_BEAMS);
+        Trace.TraceWarning("[BeamManager.SpawnBeam()] Too many active beams! Max: " + MaxBeams);
         return null;
     }
 
     public void Update()
     {
-        UpdatePool(playerBeams);
-        // UpdatePool(enemyBeams);
+        UpdatePool(_playerBeams);
+        // UpdatePool(_enemyBeams);
     }
 
     private static void UpdatePool(Beam[] pool)
@@ -81,9 +78,9 @@ internal class BeamManager
     {
         // Console.WriteLine("[BeamManager.Draw()] Draw called");
 
-        DrawPool(playerBeams, PLAYER_BEAM_LAYER);
+        DrawPool(_playerBeams, PlayerBeamLayer);
         DrawActiveBeamCount();
-        // DrawPool(enemyBeams, ENEMY_BEAM_LAYER);
+        // DrawPool(enemyBeams, EnemyBeamLayer);
     }
 
     private static void DrawPool(Beam[] pool, int layer)
@@ -111,9 +108,9 @@ internal class BeamManager
     private int CountActiveBeams()
     {
         int activeBeamCount = 0;
-        for (int i = 0; i < MAX_BEAMS; i++)
+        for (int i = 0; i < MaxBeams; i++)
         {
-            if (playerBeams[i].Active) activeBeamCount++;
+            if (_playerBeams[i].Active) activeBeamCount++;
         }
         return activeBeamCount;
     }

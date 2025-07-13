@@ -10,14 +10,14 @@ namespace RaylibDanmaku.Entities.WeaponManagers;
 
 internal class BulletManager
 {
-    private const int MAX_BULLETS = 1024;
+    private const int MaxBullets = 1024;
 
     // Bullet pools
-    private readonly Bullet[] playerBullets = new Bullet[MAX_BULLETS];
-    private readonly Bullet[] enemyBullets = new Bullet[MAX_BULLETS];
+    private readonly Bullet[] _playerBullets = new Bullet[MaxBullets];
+    private readonly Bullet[] _enemyBullets = new Bullet[MaxBullets];
     public static int PlayerBulletTextureId;
-    private const int PLAYER_BULLET_LAYER = 1;
-    private const int ENEMY_BULLET_LAYER = 2;
+    private const int PlayerBulletLayer = 1;
+    private const int EnemyBulletLayer = 2;
 
     public enum BulletType { CIRCLE, RECT, LINE }
     public enum BulletOwner { PLAYER, ENEMY }
@@ -37,7 +37,7 @@ internal class BulletManager
         float lifetimeSec,
         int textureId)
     {
-        Bullet[] pool = owner == BulletOwner.PLAYER ? playerBullets : enemyBullets;
+        Bullet[] pool = owner == BulletOwner.PLAYER ? _playerBullets : _enemyBullets;
         for (int i = 0; i < pool.Length; i++)
         {
             if (!pool[i].Active)    // find inactive bullet index in the pool
@@ -60,13 +60,13 @@ internal class BulletManager
             }
         }
         // If the bullet exceeds the max limit:
-        Trace.TraceWarning("[BulletManager] Bullet pool reached the limit! Max Bullets: " + MAX_BULLETS);
+        Trace.TraceWarning("[BulletManager] Bullet pool reached the limit! Max Bullets: " + MaxBullets);
     }
 
     public void Update(float deltaTime)
     {
-        UpdatePool(playerBullets, deltaTime);
-        // UpdatePool(enemyBullets, deltaTime);
+        UpdatePool(_playerBullets, deltaTime);
+        // UpdatePool(_enemyBullets, deltaTime);
     }
 
     private static void UpdatePool(Bullet[] pool, float deltaTime)
@@ -78,10 +78,10 @@ internal class BulletManager
             pool[i].Position += pool[i].Direction * pool[i].Speed * deltaTime;
             pool[i].Lifetime -= deltaTime;
 
-            if (pool[i].Position.X < 0 - Config.SCREEN_MARGIN ||
-                pool[i].Position.X > Config.SCREEN_WIDTH + Config.SCREEN_MARGIN ||
-                pool[i].Position.Y < 0 - Config.SCREEN_MARGIN ||
-                pool[i].Position.Y > Config.SCREEN_HEIGHT + Config.SCREEN_MARGIN ||
+            if (pool[i].Position.X < 0 - Config.ScreenMargin ||
+                pool[i].Position.X > Config.ScreenWidth + Config.ScreenMargin ||
+                pool[i].Position.Y < 0 - Config.ScreenMargin ||
+                pool[i].Position.Y > Config.ScreenHeight + Config.ScreenMargin ||
                 pool[i].Lifetime <= 0)
             {
                 pool[i].Active = false;
@@ -91,7 +91,7 @@ internal class BulletManager
 
     public void Draw()
     {
-        DrawPool(playerBullets);
+        DrawPool(_playerBullets);
         DrawActiveBulletCount();
     }
 
@@ -108,7 +108,7 @@ internal class BulletManager
                 bullet.Scale,
                 bullet.Rotation,
                 bullet.Color,
-                layer: bullet.Owner == BulletOwner.PLAYER ? PLAYER_BULLET_LAYER : ENEMY_BULLET_LAYER
+                layer: bullet.Owner == BulletOwner.PLAYER ? PlayerBulletLayer : EnemyBulletLayer
             );
         }
     }
@@ -121,9 +121,9 @@ internal class BulletManager
     private int CountActiveBullets()
     {
         int activeBulletCount = 0;
-        for (int i = 0; i < MAX_BULLETS; i++)
+        for (int i = 0; i < MaxBullets; i++)
         {
-            if (playerBullets[i].Active) activeBulletCount++;
+            if (_playerBullets[i].Active) activeBulletCount++;
         }
         return activeBulletCount;
     }

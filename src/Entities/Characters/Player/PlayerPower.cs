@@ -3,14 +3,14 @@ namespace RaylibDanmaku.Entities.Characters.Player;
 internal class PlayerPower
 {
     public int PowerLevel { get; private set; } = 0;
-    public const int MAX_POWER_LEVEL = 4;
-    public const int MIN_POWER_LEVEL = 0;
+    public const int MaxPowerLevel = 4;
+    public const int MinPowerLevel = 0;
 
     public event Action<int>? OnPowerChanged;
 
     public void Increase()
     {
-        if (PowerLevel < MAX_POWER_LEVEL)
+        if (PowerLevel < MaxPowerLevel)
         {
             PowerLevel++;
             OnPowerChanged?.Invoke(PowerLevel);
@@ -19,7 +19,7 @@ internal class PlayerPower
 
     public void Decrease()
     {
-        if (PowerLevel > MIN_POWER_LEVEL)
+        if (PowerLevel > MinPowerLevel)
         {
             PowerLevel--;
             OnPowerChanged?.Invoke(PowerLevel);

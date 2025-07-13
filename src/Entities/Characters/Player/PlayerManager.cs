@@ -11,13 +11,13 @@ namespace RaylibDanmaku.Entities.Characters.Player;
 /// </summary>
 internal class PlayerManager
 {
-    private static Player player = null!;
-    private static BulletManager bulletManager = null!;
-    private static BeamManager beamManager = null!;
+    private static Player _player = null!;
+    private static BulletManager _bulletManager = null!;
+    private static BeamManager _beamManager = null!;
 
-    public static Player GetPlayer() => player;
-    public static BulletManager GetBulletManager() => bulletManager;
-    public static BeamManager GetBeamManager() => beamManager;
+    public static Player GetPlayer() => _player;
+    public static BulletManager GetBulletManager() => _bulletManager;
+    public static BeamManager GetBeamManager() => _beamManager;
 
     private static void InitPlayer(
         float moveSpeed,
@@ -27,8 +27,8 @@ internal class PlayerManager
         bool hasBulletShot,
         bool hasBeamShot)
     {
-        bulletManager = new BulletManager();
-        beamManager = new BeamManager();
+        _bulletManager = new BulletManager();
+        _beamManager = new BeamManager();
 
         int bulletTextureId = EngineTexture.LoadTexture("assets/Bullets/PlayerBullet1.png");
         BulletManager.PlayerBulletTextureId = bulletTextureId;
@@ -36,29 +36,29 @@ internal class PlayerManager
         int beamTextureId = EngineTexture.LoadTexture("assets/Beams/PlayerBeam1.png");
         BeamManager.PlayerBeamTextureId = beamTextureId;
 
-        player = new Player(
+        _player = new Player(
             moveSpeed,
             slowMoveSpeed,
             hitboxRadius,
             spritePath,
-            scale: Config.PLAYER_SCALE
+            scale: Config.PlayerScale
         );
 
         if (hasBulletShot)
         {
-            BulletShot bulletShot = new(player, bulletManager);
-            player.SetBulletShot(bulletShot);
+            BulletShot bulletShot = new(_player, _bulletManager);
+            _player.SetBulletShot(bulletShot);
         }
         else
-            player.SetBulletShot(null);
+            _player.SetBulletShot(null);
 
         if (hasBeamShot)
         {
-            BeamShot beamShot = new(player, beamManager);
-            player.SetBeamShot(beamShot);
+            BeamShot beamShot = new(_player, _beamManager);
+            _player.SetBeamShot(beamShot);
         }
         else
-            player.SetBeamShot(null);
+            _player.SetBeamShot(null);
     }
 
     /// <summary>Initialize player based on selected player ID. </summary>

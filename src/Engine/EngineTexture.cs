@@ -9,7 +9,7 @@ internal partial class EngineTexture
     [LibraryImport("native_renderer.dll", StringMarshalling = StringMarshalling.Utf8)]
     private static partial int LoadTextureFromFile(string path);
 
-    private static readonly Dictionary<string, int> textureMap = [];    // Map from filename → texture ID
+    private static readonly Dictionary<string, int> _textureMap = [];    // Map from filename → texture ID
 
     /// <summary> Load a texture asset from file directory. </summary>
     /// <param name="filePath"> Directory to the texture asset e.g. "assets/Player/player1_sprite.png".</param>
@@ -19,7 +19,7 @@ internal partial class EngineTexture
         int textureId = LoadTextureFromFile(filePath);
 
         string fileName = Path.GetFileName(filePath);
-        textureMap[fileName] = textureId;
+        _textureMap[fileName] = textureId;
 
         return textureId;
     }
@@ -33,7 +33,7 @@ internal partial class EngineTexture
     /// <exception cref="InvalidOperationException"></exception>
     public static int GetTextureId(string fileName)
     {
-        if (textureMap.TryGetValue(fileName, out var id))
+        if (_textureMap.TryGetValue(fileName, out var id))
             return id;
         else
             throw new InvalidOperationException($"[EngineTexture] Texture ID not found for: {fileName}");

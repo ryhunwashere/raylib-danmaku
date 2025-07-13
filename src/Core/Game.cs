@@ -9,19 +9,19 @@ namespace RaylibDanmaku.Core;
 /// </summary>
 internal static class Game
 {
-    private static Player? player;
-    private static BulletManager? bulletManager;
-    private static BeamManager? beamManager;
+    private static Player? _player;
+    private static BulletManager? _bulletManager;
+    private static BeamManager? _beamManager;
 
     public static void InitGame()
     {
-        EngineRender.InitRender(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, Config.WINDOW_NAME, Config.TARGET_FPS);
+        EngineRender.InitRender(Config.ScreenWidth, Config.ScreenHeight, Config.WindowName, Config.TargetFPS);
 
         PlayerManager.InitSelectedPlayer(playerId: 1);
 
-        player = PlayerManager.GetPlayer();
-        bulletManager = PlayerManager.GetBulletManager();
-        beamManager = PlayerManager.GetBeamManager();
+        _player = PlayerManager.GetPlayer();
+        _bulletManager = PlayerManager.GetBulletManager();
+        _beamManager = PlayerManager.GetBeamManager();
     }
 
     public static void UpdateGame()
@@ -29,16 +29,16 @@ internal static class Game
         Time.Update();
         float deltaTime = Time.DeltaTime;
 
-        player?.Update(deltaTime);
-        bulletManager?.Update(deltaTime);
-        beamManager?.Update();
+        _player?.Update(deltaTime);
+        _bulletManager?.Update(deltaTime);
+        _beamManager?.Update();
     }
 
     public static void DrawGame()
     {
-        player?.Draw();
-        bulletManager?.Draw();
-        beamManager?.Draw();
+        _player?.Draw();
+        _bulletManager?.Draw();
+        _beamManager?.Draw();
 
         EngineRender.RenderFrame();   // Draw all queued objects
     }

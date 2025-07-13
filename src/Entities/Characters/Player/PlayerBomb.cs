@@ -5,10 +5,10 @@ namespace RaylibDanmaku.Entities.Characters.Player;
 internal class PlayerBomb
 {
     private int BombCount { get; set; } = 4;
-    private const float BOMB_COOLDOWN = 3.0f;
-    private float bombTimer = BOMB_COOLDOWN;   // Set initial bomb timer
+    private const float BombCooldown = 3.0f;
+    private float _bombTimer = BombCooldown;   // Set initial bomb timer
 
-    public void Update(float deltaTime) => bombTimer += deltaTime;
+    public void Update(float deltaTime) => _bombTimer += deltaTime;
 
     public void Use()
     {
@@ -16,17 +16,17 @@ internal class PlayerBomb
         if (BombCount < 0)
             throw new ArgumentOutOfRangeException(nameof(BombCount), "[PlayerBomb.Use()] Negative BombCount value");
 
-        if (bombTimer >= BOMB_COOLDOWN && BombCount > 0)
+        if (_bombTimer >= BombCooldown && BombCount > 0)
         {
             BombCount -= 1;
-            bombTimer = 0.0f;
+            _bombTimer = 0.0f;
             Console.WriteLine("[PlayerBomb] Fire in the hole! Bombs left: " + BombCount);
         }
         else if (BombCount == 0)
             Console.WriteLine("[PlayerBomb] No bombs left!");
         else
         {
-            float timeLeft = MathF.Round(bombTimer - BOMB_COOLDOWN, digits: 1) * -1;
+            float timeLeft = MathF.Round(_bombTimer - BombCooldown, digits: 1) * -1;
             Console.WriteLine("[PlayerBomb] Bomb is still on cooldown! Time left: " + timeLeft + "s");
         }
     }
