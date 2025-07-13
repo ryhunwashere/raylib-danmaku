@@ -4,20 +4,20 @@ using RaylibDanmaku.Core;
 using RaylibDanmaku.Entities.WeaponManagers;
 using RaylibDanmaku.Entities.IPlayerShotTypes;
 
-namespace RaylibDanmaku.Entities.Characters;
+namespace RaylibDanmaku.Entities.Characters.Player;
 
 /// <summary>
 /// Construct a player based on selection, and load weapon textures like bullet and beam.
 /// </summary>
 internal class PlayerManager
 {
-    private static Player? player;
-    private static BulletManager? bulletManager;
-    private static BeamManager? beamManager;
+    private static Player player = null!;
+    private static BulletManager bulletManager = null!;
+    private static BeamManager beamManager = null!;
 
-    public static Player? GetPlayer() => player;
-    public static BulletManager? GetBulletManager() => bulletManager;
-    public static BeamManager? GetBeamManager() => beamManager;
+    public static Player GetPlayer() => player;
+    public static BulletManager GetBulletManager() => bulletManager;
+    public static BeamManager GetBeamManager() => beamManager;
 
     private static void InitPlayer(
         float moveSpeed,

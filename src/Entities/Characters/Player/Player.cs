@@ -6,7 +6,7 @@ using RaylibDanmaku.Structs;
 using RaylibDanmaku.Engine;
 using RaylibDanmaku.Entities.IPlayerShotTypes;
 
-namespace RaylibDanmaku.Entities.Characters;
+namespace RaylibDanmaku.Entities.Characters.Player;
 
 /// <summary> Player character: handles input, movement, shooting, power, and bombs. </summary>
 internal class Player
@@ -21,8 +21,8 @@ internal class Player
     public float TextureScale { get; private set; }
 
     // Bullet & beam shot handlers (set externally before starting game)
-    private BulletShot? BulletShot;
-    private BeamShot? BeamShot;
+    public BulletShot BulletShot = null!;
+    public BeamShot BeamShot = null!;
 
     // Helpers
     private readonly PlayerInput input;
@@ -77,13 +77,13 @@ internal class Player
         // Shooting logic
         if (input.ShootBullet && playerBulletCooldown.IsReady)
         {
-            BulletShot?.ShootBullet(playerPower.PowerLevel);
+            BulletShot.ShootBullet(playerPower.PowerLevel);
             playerBulletCooldown.Reset();
         }
         if (input.StartBeam)
-            BeamShot?.ShootBeam(playerPower.PowerLevel);
+            BeamShot.ShootBeam(playerPower.PowerLevel);
         if (input.StopBeam)
-            BeamShot?.StopShootBeam();
+            BeamShot.StopShootBeam();
 
         // Bomb
         if (input.UseBomb)
@@ -109,9 +109,9 @@ internal class Player
         );
     }
 
-    public void SetBulletShot(BulletShot? shot) => BulletShot = shot;
+    public void SetBulletShot(BulletShot shot) => BulletShot = shot;
 
-    public void SetBeamShot(BeamShot? shot) => BeamShot = shot;
+    public void SetBeamShot(BeamShot shot) => BeamShot = shot;
 
     // Power change event
     private void HandlePowerChanged(int newPowerLevel)
@@ -119,8 +119,8 @@ internal class Player
         // Restart beam at new power
         if (input.IsBeamHeld)
         {
-            BeamShot?.StopShootBeam();
-            BeamShot?.ShootBeam(newPowerLevel);
+            BeamShot.StopShootBeam();
+            BeamShot.ShootBeam(newPowerLevel);
         }
     }
 }

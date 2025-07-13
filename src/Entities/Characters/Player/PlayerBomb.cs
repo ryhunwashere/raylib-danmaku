@@ -1,4 +1,4 @@
-namespace RaylibDanmaku.Entities.Characters;
+namespace RaylibDanmaku.Entities.Characters.Player;
 
 internal class PlayerBomb
 {

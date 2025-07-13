@@ -1,5 +1,5 @@
 using RaylibDanmaku.Engine;
-using RaylibDanmaku.Entities.Characters;
+using RaylibDanmaku.Entities.Characters.Player;
 using RaylibDanmaku.Entities.WeaponManagers;
 
 namespace RaylibDanmaku.Core;
@@ -16,13 +16,17 @@ internal static class Game
     public static void InitGame()
     {
         EngineRender.InitRender(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, Config.WINDOW_NAME, Config.TARGET_FPS);
+    }
 
-        PlayerManager.InitSelectedPlayer(playerId: 2);      // Choose player character here
+    public static void StartGameWithSelectedPlayer(int playerId)
+    {
+        PlayerManager.InitSelectedPlayer(playerId);
 
         player = PlayerManager.GetPlayer();
         bulletManager = PlayerManager.GetBulletManager();
         beamManager = PlayerManager.GetBeamManager();
     }
+
 
     public static void UpdateGame()
     {

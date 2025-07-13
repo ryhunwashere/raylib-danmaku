@@ -1,19 +1,12 @@
 using RaylibDanmaku.Entities.IPlayerShotTypes;
 
-namespace RaylibDanmaku.Entities.Characters;
+namespace RaylibDanmaku.Entities.Characters.Player;
 
-internal class PlayerShooting
+internal class PlayerShooting(BulletShot? bulletShot, BeamShot? beamShot, float bulletCooldownSeconds)
 {
-    private BulletShot? bulletShot;
-    private BeamShot? beamShot;
-    private readonly PlayerBulletCooldown playerBulletCooldown;
-
-    public PlayerShooting(BulletShot? bulletShot, BeamShot? beamShot, float bulletCooldownSeconds)
-    {
-        this.bulletShot = bulletShot;
-        this.beamShot = beamShot;
-        playerBulletCooldown = new PlayerBulletCooldown(bulletCooldownSeconds);
-    }
+    private BulletShot? bulletShot = bulletShot;
+    private BeamShot? beamShot = beamShot;
+    private readonly PlayerBulletCooldown playerBulletCooldown = new PlayerBulletCooldown(bulletCooldownSeconds);
 
     public void Update(float deltaTime)
     {

@@ -3,7 +3,7 @@ using System.Numerics;
 using Raylib_cs;
 using RaylibDanmaku.Core;
 
-namespace RaylibDanmaku.Entities.Characters;
+namespace RaylibDanmaku.Entities.Characters.Player;
 
 internal class PlayerInput
 {
