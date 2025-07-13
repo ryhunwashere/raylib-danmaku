@@ -20,19 +20,12 @@ internal class Player
     public int TextureId;
     public float TextureScale { get; private set; }
 
-    // Bullet & beam shot handlers (set externally before starting game)
-    public BulletShot BulletShot = null!;
-    public BeamShot BeamShot = null!;
-
     // Helpers
     private readonly PlayerInput input;
     private readonly PlayerPower playerPower;
     private readonly PlayerBomb playerBomb;
+    private readonly PlayerShooting playerShooting;
 
-    // Cooldown timer for bullet shooting
-    private readonly PlayerBulletCooldown playerBulletCooldown;
-
-    // Constructor
     public Player(float moveSpeed, float slowMoveSpeed, float hitboxRadius, string spritePath, float scale)
     {
         if (string.IsNullOrEmpty(spritePath))
@@ -54,40 +47,46 @@ internal class Player
         input = new PlayerInput();
         playerPower = new PlayerPower();
         playerBomb = new PlayerBomb();
-        playerBulletCooldown = new PlayerBulletCooldown(cooldownTime: 0.1f);
+        playerShooting = new PlayerShooting(cooldownTime: 0.1f);
 
         // Subscribe to power change event
         playerPower.OnPowerChanged += HandlePowerChanged;
     }
 
+    public void SetBulletShot(BulletShot? shot) => playerShooting.SetBulletShot(shot);
+
+    public void SetBeamShot(BeamShot? shot) => playerShooting.SetBeamShot(shot);
+
     public void Update(float deltaTime)
     {
-        // Update timers
-        playerBulletCooldown.Update(deltaTime);
+        // Update cooldown timers
+        playerShooting.Update(deltaTime);
         playerBomb.Update(deltaTime);
 
         // Movement
-        Vector2 moveDelta = PlayerInput.GetMovement(MoveSpeed, SlowMoveSpeed, deltaTime);
+        Vector2 moveDelta = input.GetMovement(MoveSpeed, SlowMoveSpeed, deltaTime);
         Position += moveDelta;
 
         // Clamp position to screen
         Position.X = Math.Clamp(Position.X, HitboxRadius, Config.SCREEN_WIDTH - HitboxRadius);
         Position.Y = Math.Clamp(Position.Y, HitboxRadius, Config.SCREEN_HEIGHT - HitboxRadius);
 
-        // Shooting logic
-        if (input.ShootBullet && playerBulletCooldown.IsReady)
-        {
-            BulletShot.ShootBullet(playerPower.PowerLevel);
-            playerBulletCooldown.Reset();
-        }
-        if (input.StartBeam)
-            BeamShot.ShootBeam(playerPower.PowerLevel);
-        if (input.StopBeam)
-            BeamShot.StopShootBeam();
+        Trace.Assert(Position.X > 0 && Position.X < Config.SCREEN_WIDTH && Position.Y > 0 && Position.Y < Config.SCREEN_HEIGHT,
+            "[Player.Update()] Player's position must be inside the game window!");
 
         // Bomb
         if (input.UseBomb)
             playerBomb.Use();
+
+        // Shooting bullets
+        if (input.ShootBullet)
+            playerShooting.ShootBullet(playerPower);
+
+        // Shooting beams
+        if (input.ShootBeam)
+            playerShooting.ShootBeam(playerPower);
+        if (input.StopBeam)
+            playerShooting.StopBeam();
 
         // Power level up/down
         if (input.PowerUp)
@@ -109,18 +108,11 @@ internal class Player
         );
     }
 
-    public void SetBulletShot(BulletShot shot) => BulletShot = shot;
-
-    public void SetBeamShot(BeamShot shot) => BeamShot = shot;
-
     // Power change event
     private void HandlePowerChanged(int newPowerLevel)
     {
         // Restart beam at new power
         if (input.IsBeamHeld)
-        {
-            BeamShot.StopShootBeam();
-            BeamShot.ShootBeam(newPowerLevel);
-        }
+            playerShooting.RestartBeam(playerPower);
     }
 }

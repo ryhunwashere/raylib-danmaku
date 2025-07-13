@@ -65,8 +65,9 @@ internal class PlayerManager
     /// <param name="playerId"> Select between player type 1 to 3.</param>
     public static void InitSelectedPlayer(int playerId)
     {
+        Trace.Assert(playerId >= 1 && playerId <= 3, "Invalid playerId.");
         if (playerId < 1 || playerId > 3)
-            throw new ArgumentOutOfRangeException(nameof(playerId));
+            throw new ArgumentOutOfRangeException(nameof(playerId), "playerId is beyond the allowed range.");
 
         switch (playerId)
         {

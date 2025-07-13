@@ -16,17 +16,13 @@ internal static class Game
     public static void InitGame()
     {
         EngineRender.InitRender(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, Config.WINDOW_NAME, Config.TARGET_FPS);
-    }
 
-    public static void StartGameWithSelectedPlayer(int playerId)
-    {
-        PlayerManager.InitSelectedPlayer(playerId);
+        PlayerManager.InitSelectedPlayer(playerId: 1);
 
         player = PlayerManager.GetPlayer();
         bulletManager = PlayerManager.GetBulletManager();
         beamManager = PlayerManager.GetBeamManager();
     }
-
 
     public static void UpdateGame()
     {

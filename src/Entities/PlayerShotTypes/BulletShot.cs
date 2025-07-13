@@ -1,7 +1,7 @@
 using System.Numerics;
 
 using RaylibDanmaku.Structs;
-using RaylibDanmaku.Entities.Characters;
+using RaylibDanmaku.Entities.Characters.Player;
 using RaylibDanmaku.Entities.WeaponManagers;
 
 namespace RaylibDanmaku.Entities.IPlayerShotTypes;

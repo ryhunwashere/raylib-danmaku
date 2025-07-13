@@ -3,7 +3,7 @@ using System.Numerics;
 using RaylibDanmaku.Core;
 using RaylibDanmaku.Engine;
 using RaylibDanmaku.Structs;
-using RaylibDanmaku.Entities.Characters;
+using RaylibDanmaku.Entities.Characters.Player;
 using RaylibDanmaku.Entities.WeaponManagers;
 using RaylibDanmaku.Entities.WeaponTypes;
 
@@ -85,9 +85,8 @@ internal class BeamShot(Player player, BeamManager beamManager) : IBeamShot
     public void StopShootBeam()
     {
         foreach (var beam in activePlayerBeams)
-        {
             beam.Deactivate();
-        }
+            
         activePlayerBeams.Clear();
     }
 }
