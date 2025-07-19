@@ -4,7 +4,7 @@ using System.Numerics;
 using RaylibDanmaku.Core;
 using RaylibDanmaku.Structs;
 using RaylibDanmaku.Engine;
-using RaylibDanmaku.Entities.IPlayerShotTypes;
+using RaylibDanmaku.Entities.ShotTypes;
 
 namespace RaylibDanmaku.Entities.Characters.Player;
 
@@ -53,9 +53,10 @@ internal class Player
         _playerPower.OnPowerChanged += HandlePowerChanged;
     }
 
-    public void SetBulletShot(BulletShot? shot) => _playerShooting.SetBulletShot(shot);
-
-    public void SetBeamShot(BeamShot? shot) => _playerShooting.SetBeamShot(shot);
+    public void SetShotType(PlayerShotType? shot)
+    {
+        _playerShooting.SetShotType(shot);
+    }
 
     public void Update(float deltaTime)
     {
@@ -78,15 +79,13 @@ internal class Player
         if (_input.UseBomb)
             _playerBomb.Use();
 
-        // Shooting bullets
-        if (_input.ShootBullet)
-            _playerShooting.ShootBullet(_playerPower);
+        // Shooting
+        if (_input.Shoot)
+            _playerShooting.Shoot(this, _playerPower);
 
-        // Shooting beams
-        if (_input.ShootBeam)
-            _playerShooting.ShootBeam(_playerPower);
-        if (_input.StopBeam)
-            _playerShooting.StopBeam();
+        // Stop shooting (for beams)
+        if (_input.StopShoot)
+            _playerShooting.StopShoot(this);
 
         // Power level up/down
         if (_input.PowerUp)
@@ -112,7 +111,7 @@ internal class Player
     private void HandlePowerChanged(int newPowerLevel)
     {
         // Restart beam at new power
-        if (_input.IsBeamHeld)
-            _playerShooting.RestartBeam(_playerPower);
+        if (_input.IsShooting)
+            _playerShooting.RestartBeam(this, _playerPower);
     }
 }

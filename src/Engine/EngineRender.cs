@@ -1,5 +1,4 @@
 using System.Runtime.InteropServices;
-
 using RaylibDanmaku.Structs;
 
 namespace RaylibDanmaku.Engine;

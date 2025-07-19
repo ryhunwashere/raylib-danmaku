@@ -5,9 +5,7 @@ using RaylibDanmaku.Structs;
 using RaylibDanmaku.Engine;
 using RaylibDanmaku.Entities.WeaponTypes;
 
-namespace RaylibDanmaku.Entities.WeaponManagers;
-
-public enum BeamOwner { PLAYER, ENEMY }
+namespace RaylibDanmaku.Managers;
 
 /// <summary>
 /// Handles how to spawn or move a beam object.
@@ -20,6 +18,9 @@ internal class BeamManager
 
     public static int PlayerBeamTextureId;
     private const int PlayerBeamLayer = 2;
+
+    // Beam owner to be used for collision detection between player & enemy
+    public enum Owner { Player, Enemy }
     
 
     /// <summary> Initialize all beam slots so they're ready </summary>
@@ -33,20 +34,20 @@ internal class BeamManager
     }
 
     public Beam? SpawnBeam(
-        BeamOwner owner,
-        Vector2 startPosition,
+        Owner owner,
+        Vector2 startPos,
         float rotation,
         float scale,
-        NativeColor tint,
+        NativeColor color,
         int textureId,
         Func<Vector2>? followTargetFunc = null)
     {
-        Beam[] pool = owner == BeamOwner.PLAYER ? _playerBeams : _enemyBeams;
+        Beam[] pool = owner == Owner.Player ? _playerBeams : _enemyBeams;
         for (int i = 0; i < pool.Length; i++)
         {
             if (!pool[i].Active)
             {
-                pool[i].Activate(owner, startPosition, rotation, scale, tint, textureId, followTargetFunc);
+                pool[i].Activate(startPos, rotation, scale, color, textureId, followTargetFunc);
                 return pool[i];
             }
         }

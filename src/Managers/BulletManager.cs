@@ -6,7 +6,7 @@ using RaylibDanmaku.Core;
 using RaylibDanmaku.Engine;
 using RaylibDanmaku.Entities.WeaponTypes;
 
-namespace RaylibDanmaku.Entities.WeaponManagers;
+namespace RaylibDanmaku.Managers;
 
 internal class BulletManager
 {
@@ -15,19 +15,16 @@ internal class BulletManager
     // Bullet pools
     private readonly Bullet[] _playerBullets = new Bullet[MaxBullets];
     private readonly Bullet[] _enemyBullets = new Bullet[MaxBullets];
-    public static int PlayerBulletTextureId;
+
     private const int PlayerBulletLayer = 1;
     private const int EnemyBulletLayer = 2;
+    
+    public static int PlayerBulletTextureId;
 
-    public enum BulletType { CIRCLE, RECT, LINE }
-    public enum BulletOwner { PLAYER, ENEMY }
-
-    /// <summary>
-    /// Spawn an individual bullet.
-    /// </summary>
+    /// <summary> Spawn an individual bullet. </summary>
     public void SpawnBullet(
-        BulletOwner owner,
-        BulletType type,
+        BulletOwner bulletOwner,
+        BulletType bulletType,
         Vector2 position,
         Vector2 direction,
         float speed,
@@ -37,15 +34,15 @@ internal class BulletManager
         float lifetimeSec,
         int textureId)
     {
-        Bullet[] pool = owner == BulletOwner.PLAYER ? _playerBullets : _enemyBullets;
+        Bullet[] pool = bulletOwner == BulletOwner.Player ? _playerBullets : _enemyBullets;
         for (int i = 0; i < pool.Length; i++)
         {
             if (!pool[i].Active)    // find inactive bullet index in the pool
             {
                 pool[i] = new Bullet
                 {
-                    Owner = owner,
-                    Type = type,
+                    BulletOwner = bulletOwner,
+                    BulletType = bulletType,
                     Position = position,
                     Direction = Vector2.Normalize(direction),
                     Speed = speed,
@@ -108,7 +105,7 @@ internal class BulletManager
                 bullet.Scale,
                 bullet.Rotation,
                 bullet.Color,
-                layer: bullet.Owner == BulletOwner.PLAYER ? PlayerBulletLayer : EnemyBulletLayer
+                layer: bullet.BulletOwner == BulletOwner.Player ? PlayerBulletLayer : EnemyBulletLayer
             );
         }
     }

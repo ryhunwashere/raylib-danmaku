@@ -1,14 +1,11 @@
 using System.Numerics;
-
 using RaylibDanmaku.Structs;
-using RaylibDanmaku.Entities.WeaponManagers;
 
 namespace RaylibDanmaku.Entities.WeaponTypes;
 
 ///<summary> Represents a single beam object. Contains function to activate or deactivate the beam. </summary>
 internal class Beam
 {
-    public BeamOwner Owner;
     public Vector2 Position;
     public float Rotation;
     public float Scale;
@@ -31,7 +28,7 @@ internal class Beam
     /// <param name="scale">Change size of beam multiplied by scale. </param>
     /// <param name="color">
     ///     Tint color of the beam. <br/> 
-    ///     Set to NativeColor.White to keep the beam texture color as it is. 
+    ///     Set to Color.White to keep the beam texture color as it is. 
     /// </param>
     /// <param name="textureId">Texture ID of the beam (not texture file path). </param>
     /// <param name="followTargetFunc">
@@ -39,7 +36,6 @@ internal class Beam
     ///     Set to "followTargetFunc: () => null" to make the beam static based on startPos.
     /// </param>
     public void Activate(
-        BeamOwner owner,
         Vector2 startPos,
         float rotation,
         float scale,
@@ -47,7 +43,6 @@ internal class Beam
         int textureId,
         Func<Vector2>? followTargetFunc = null)
     {
-        Owner = owner;
         Position = startPos;
         Rotation = rotation;
         Scale = scale;
