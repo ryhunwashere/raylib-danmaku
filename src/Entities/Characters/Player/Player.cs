@@ -21,7 +21,7 @@ internal class Player
     public float TextureScale { get; private set; }
 
     // Helpers
-    private readonly PlayerInput _input;
+    private readonly PlayerInput _playerInput;
     private readonly PlayerPower _playerPower;
     private readonly PlayerBomb _playerBomb;
     private readonly PlayerShooting _playerShooting;
@@ -44,7 +44,7 @@ internal class Player
         GrazeRadius = hitboxRadius * 4.0f;
 
         // Initialize helpers
-        _input = new PlayerInput();
+        _playerInput = new PlayerInput();
         _playerPower = new PlayerPower();
         _playerBomb = new PlayerBomb();
         _playerShooting = new PlayerShooting(cooldownTime: 0.1f);
@@ -65,7 +65,7 @@ internal class Player
         _playerBomb.Update(deltaTime);
 
         // Movement
-        Vector2 moveDelta = _input.GetMovement(MoveSpeed, SlowMoveSpeed, deltaTime);
+        Vector2 moveDelta = _playerInput.GetMovement(MoveSpeed, SlowMoveSpeed, deltaTime);
         Position += moveDelta;
 
         // Clamp position to screen
@@ -76,21 +76,21 @@ internal class Player
             "[Player.Update()] Player's position must be inside the game window!");
 
         // Bomb
-        if (_input.UseBomb)
+        if (_playerInput.UseBomb)
             _playerBomb.Use();
 
         // Shooting
-        if (_input.Shoot)
+        if (_playerInput.Shoot)
             _playerShooting.Shoot(this, _playerPower);
 
         // Stop shooting (for beams)
-        if (_input.StopShoot)
+        if (_playerInput.StopShoot)
             _playerShooting.StopShoot(this);
 
         // Power level up/down
-        if (_input.PowerUp)
+        if (_playerInput.PowerUp)
             _playerPower.Increase();
-        if (_input.PowerDown)
+        if (_playerInput.PowerDown)
             _playerPower.Decrease();
     }
 
@@ -111,7 +111,7 @@ internal class Player
     private void HandlePowerChanged(int newPowerLevel)
     {
         // Restart beam at new power
-        if (_input.IsShooting)
+        if (_playerInput.IsShooting)
             _playerShooting.RestartBeam(this, _playerPower);
     }
 }

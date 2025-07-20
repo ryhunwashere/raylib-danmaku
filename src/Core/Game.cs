@@ -17,7 +17,7 @@ internal static class Game
     {
         EngineRender.InitRender(Config.ScreenWidth, Config.ScreenHeight, Config.WindowName, Config.TargetFPS);
 
-        PlayerManager.InitSelectedPlayer(PlayerManager.PlayerCharacters.Reimu);
+        PlayerManager.InitSelectedPlayer(PlayerManager.PlayerCharacters.MarisaB);
 
         _player = PlayerManager.GetPlayer();
         _bulletManager = PlayerManager.GetBulletManager();

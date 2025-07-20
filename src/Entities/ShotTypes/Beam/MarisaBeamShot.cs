@@ -1,19 +1,17 @@
 using System.Numerics;
-using System.Collections.Generic;
 
 using RaylibDanmaku.Core;
 using RaylibDanmaku.Structs;
 using RaylibDanmaku.Engine;
 using RaylibDanmaku.Managers;
 using RaylibDanmaku.Entities.Characters.Player;
-using RaylibDanmaku.Entities.WeaponTypes;
 
 namespace RaylibDanmaku.Entities.ShotTypes.Beam;
 
 internal class MarisaBeamShot : PlayerShotType
 {
     private readonly BeamManager _beamManager;
-    private readonly List<WeaponTypes.Beam> _activePlayerBeams = new();
+    private readonly List<WeaponTypes.Beam> _activePlayerBeams = [];
     private readonly float _beamHeight;
 
     public MarisaBeamShot(BeamManager beamManager)
@@ -64,6 +62,11 @@ internal class MarisaBeamShot : PlayerShotType
             beam.Deactivate();
 
         _activePlayerBeams.Clear();
+    }
+
+    public override List<WeaponTypes.Beam> GetActiveBeams()
+    {
+        return _activePlayerBeams;
     }
 
     private void SpawnPlayerBeam(Player player, float offsetX)
